@@ -1,7 +1,7 @@
 import './Profile.css'
 import Header from '../Header/Header'
 
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 
 import { CurrentUserContext } from './../../contexts/CurrentUserContext'
 
@@ -14,9 +14,9 @@ export default function Profile({
   const { currentUser } = useContext(CurrentUserContext)
 
   const [name, setName] = useState(currentUser.name)
-  const [editName, setEditName] = useState(currentUser.name)
+  const [setEditName] = useState(currentUser.name)
   const [email, setEmail] = useState(currentUser.email)
-  const [editEmail, setEditEmail] = useState(currentUser.email)
+  const [setEditEmail] = useState(currentUser.email)
 
   const handleSubmit = (evt) => {
     evt.preventDefault()

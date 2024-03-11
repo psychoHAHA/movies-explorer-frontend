@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Link, useLocation, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import "../Auth/Auth.css"
 import logo from "../../images/logo.svg"
 
@@ -9,8 +9,6 @@ export default function Login({ onLogin }) {
     email: "",
     password: "",
   })
-
-  const navigate = useNavigate()
 
   const handleChange = (e) => {
     const { name, value } = e.target

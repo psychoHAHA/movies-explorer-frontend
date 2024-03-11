@@ -1,10 +1,9 @@
 import React from "react"
-import { Link, useLocation, NavLink } from "react-router-dom"
+import { Link } from "react-router-dom"
 
 import "./HeaderNotAuth.css"
 
 export default function HeaderNotAuth() {
-  const location = useLocation()
   return (
     <>
       <div className="header__account-menu">

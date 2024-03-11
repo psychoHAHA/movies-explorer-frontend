@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
-import { Link, useLocation, NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 
 import './HeaderAuth.css'
 
 export default function HeaderAuth() {
-  const location = useLocation()
   const [isOpen, setIsOpen] = useState()
 
   return (

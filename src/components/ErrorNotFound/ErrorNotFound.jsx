@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import './ErrorNotFound.css'
 
 export default function ErrorNotFound() {
