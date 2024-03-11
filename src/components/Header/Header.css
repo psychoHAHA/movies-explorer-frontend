@@ -1,0 +1,45 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 14px 0px;
+  margin-bottom: 38px;
+}
+
+.header__logo {
+  height: 38px;
+  width: 38px;
+}
+
+.header__button {
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 16px;
+  outline: none;
+  border: none;
+  padding: 5px 10px;
+  
+}
+
+@media screen and (min-width: 645px) {
+  .header {
+    padding: 17px 15px 0 31px;
+  }
+
+  .header__button {
+    font-size: 12px;
+    padding: 8px 20px;
+  }
+}
+
+@media screen and (min-width: 880px) {
+
+  .header {
+    padding: 19px 56px 0px 67px;
+  }
+
+  .header__button {
+    font-size: 12px;
+  }
+}

@@ -1,0 +1,127 @@
+.about {
+  margin: 0 18px 58px;
+}
+
+.about__title {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 22px;
+  border-bottom: 1px solid #DADADA;
+  padding-bottom: 28px;
+  margin: 0 0 60px 0;
+}
+
+.about__section {
+  display: grid;
+  gap: 56px;
+}
+
+.about__container {
+  margin: 0;
+}
+
+.about__container-type_title {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 22px;
+  margin: 0 0 16px 0;
+}
+
+.about__container-type_paragraph {
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 16px;
+  margin: 0;
+}
+
+.about__diagram {
+  display: flex;
+  justify-content: center;
+  margin-top: 49px;
+}
+
+.about__diagram-backend {
+  flex: 1 1;
+  margin: 0;
+}
+
+.about__diagram-frontend {
+  flex: 2.5 0.5;
+  margin: 0;
+}
+
+.about__diagram-type_time {
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 13px;
+}
+
+.about__diagram-backend-type_time {
+  background-color: #3DDC84;
+  color: #000;
+}
+
+.about__diagram-frontend-type_time {
+  background-color: #272727;
+}
+
+.about__diagram-type_title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #A0A0A0;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 13px;
+}
+
+@media screen and (min-width: 645px) {
+  .about {
+    margin: 0 50px;
+  }
+  .about__title {
+    font-size: 22px;
+    line-height: 27px;
+    padding-bottom: 23px;
+    margin-bottom: 70px;
+  }
+
+  .about__section {
+    grid-template-columns: auto auto;
+    column-gap: 30px;
+    row-gap: 22px;
+  }
+
+  .about__container-type_title {
+    font-size: 20px;
+    line-height: 24px;
+  }
+  .about__container-type_paragraph {
+    font-size: 12px;
+    line-height: 18px;
+  }
+  .about__diagram-type_time {
+    font-size: 14px;
+    line-height: 18px;
+  }
+  .about__diagram-type_title {
+    font-size: 14px;
+    line-height: 17px;
+  }
+}
+
+@media screen and (min-width: 880px) {
+  .about {
+    margin: 0 70px;
+  }
+
+  .about__section {
+    column-gap: 40px;
+    row-gap: 26px;
+  }
+}
+
