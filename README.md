@@ -1,6 +1,6 @@
 # Movies-explorer-frontend
 
-## Links:
+## Links
 
 ### Frontend: https://psychodelic.movie.nomoredomainswork.ru/movies
 
