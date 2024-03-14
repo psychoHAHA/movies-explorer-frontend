@@ -1,0 +1,10 @@
+.error-validation {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 12px;
+  min-height: 24px;
+  margin-top: 5px;
+  width: 238px;
+  color: #FF0000;
+  transition: ease-in-out 0.2s;
+}

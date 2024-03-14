@@ -7,10 +7,7 @@ import { CurrentUserContext } from './../../contexts/CurrentUserContext'
 
 import mainApi from '../../utils/MainApi.js'
 
-
-export default function Profile({
-  onLogout,
-}) {
+export default function Profile({ onLogout }) {
   const { currentUser } = useContext(CurrentUserContext)
 
   const [name, setName] = useState(currentUser.name)
@@ -20,7 +17,6 @@ export default function Profile({
 
   const handleSubmit = (evt) => {
     evt.preventDefault()
-
     mainApi
       .setUserInfo({ name, email })
       .then(() => {
@@ -74,15 +70,8 @@ export default function Profile({
           </div>
 
           <div className="profile__buttons">
-            <button
-              className="profile__button profile__button-edit"
-            >
-              Редактировать
-            </button>
-            <button
-              className="profile__button profile__button-logout"
-              onClick={logoutClickHandler}
-            >
+            <button className="profile__button profile__button-edit">Редактировать</button>
+            <button className="profile__button profile__button-logout" onClick={logoutClickHandler}>
               Выйти из аккаунта
             </button>
           </div>

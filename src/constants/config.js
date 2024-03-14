@@ -1,4 +1,4 @@
-import { mainApiURL, movieApiURL } from './constants.js';
+import { mainApiURL, movieApiURL } from './constants.js'
 
 const CONFIG = {
   shortMovieDuration: 40,
@@ -20,15 +20,17 @@ const CONFIG = {
   mainApiConfig: {
     baseUrl: mainApiURL,
     headers: {
+      // Authorization: `Bearer ${localStorage.getItem('token')}`,
       'Content-Type': 'application/json',
     },
   },
   movieApiConfig: {
     baseUrl: `${movieApiURL}/beatfilm-movies`,
     headers: {
+      // Authorization: `Bearer ${localStorage.getItem('token')}`,
       'Content-Type': 'application/json',
     },
   },
-};
+}
 
-export { CONFIG };
+export { CONFIG }

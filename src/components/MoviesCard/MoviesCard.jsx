@@ -11,9 +11,7 @@ export default function MoviesCard({ movie }) {
   const { duration, image: imageURL, nameRU, movieId, trailerLink } = movie
 
   useEffect(() => {
-    const isSaved = savedMoviesList.some(
-      (savedMovie) => savedMovie.movieId === movie.movieId
-    )
+    const isSaved = savedMoviesList.some((savedMovie) => savedMovie.movieId === movie.movieId)
     setIsMovieSaved(isSaved)
   }, [savedMoviesList, movie])
 
@@ -73,9 +71,7 @@ export default function MoviesCard({ movie }) {
 
       {location.pathname === '/movies' && (
         <button
-          className={`movies-card__button ${
-            isMovieSaved ? 'movies-card__button-selected' : ''
-          }`}
+          className={`movies-card__button ${isMovieSaved ? 'movies-card__button-selected' : ''}`}
           onClick={saveMovieHandler}
         >
           Сохранить
@@ -83,10 +79,7 @@ export default function MoviesCard({ movie }) {
       )}
 
       {location.pathname === '/saved-movies' && (
-        <button
-          className="movies-card__button movies-card__button-cross"
-          onClick={deleteMovieHandler}
-        >
+        <button className="movies-card__button movies-card__button-cross" onClick={deleteMovieHandler}>
           Удалить
         </button>
       )}

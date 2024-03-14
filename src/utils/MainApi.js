@@ -24,26 +24,28 @@ class MainApi {
   }
 
   getUserInfo() {
+    const token = localStorage.getItem('token')
     return fetch(`${this._baseUrl}/users/me`, {
       method: 'GET',
       headers: this._headers,
+      authorization: `Bearer ${token}`,
     }).then(this._getResponse)
   }
 
   setUserInfo({ name, email }) {
     return fetch(`${this._baseUrl}/users/me`, {
-      method: "PATCH",
+      method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify({ name, email }),
     }).then((res) => {
       if (res.ok) {
-        return res.json();
+        return res.json()
       } else {
         return res.json().then((err) => {
-          return Promise.reject(err);
-        });
+          return Promise.reject(err)
+        })
       }
-    });
+    })
   }
 
   register(name, email, password) {
@@ -87,10 +89,11 @@ class MainApi {
     }).then(this._getResponse)
   }
 
-  getMovies() {
+  getMovies(token) {
     return fetch(`${this._baseUrl}/movies`, {
       method: 'GET',
       headers: this._headers,
+      authorization: `Bearer ${token}`,
     }).then(this._getResponse)
   }
 }
