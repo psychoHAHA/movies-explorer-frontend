@@ -1,0 +1,11 @@
+.error-validation {
+  color: red;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 12px;
+  min-height: 24px;
+  width: 238px;
+  color: #FF0000;
+  transition: ease-in-out 0.2s;
+  padding-top: 4px;
+}

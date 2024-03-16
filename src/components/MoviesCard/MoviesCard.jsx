@@ -11,11 +11,11 @@ export default function MoviesCard({ movie }) {
   const { duration, image: imageURL, nameRU, movieId, trailerLink } = movie
 
   useEffect(() => {
-    const isSaved = savedMoviesList.some(
-      (savedMovie) => savedMovie.movieId === movie.movieId
-    )
+    const isSaved = savedMoviesList.some((savedMovie) => savedMovie.movieId === movie.movieId)
     setIsMovieSaved(isSaved)
   }, [savedMoviesList, movie])
+
+  const [back, setBack] = useState(true)
 
   const [isMovieSaved, setIsMovieSaved] = useState(false)
 
@@ -28,7 +28,10 @@ export default function MoviesCard({ movie }) {
   const saveMovieHandler = () => {
     if (!isMovieSaved) {
       saveMovie(movie)
-        .then(() => setIsMovieSaved(true))
+        .then(() => {
+          setIsMovieSaved(true)
+          changeButton()
+        })
         .catch((err) => {
           console.error(err)
           console.log(movie)
@@ -55,6 +58,12 @@ export default function MoviesCard({ movie }) {
       })
   }
 
+  const changeButton = () => {
+    setBack(!back)
+  }
+
+  const newButton = back ? '' : 'movies-card__button-selected'
+
   return (
     <li className="movies-card">
       <a
@@ -73,20 +82,16 @@ export default function MoviesCard({ movie }) {
 
       {location.pathname === '/movies' && (
         <button
-          className={`movies-card__button ${
-            isMovieSaved ? 'movies-card__button-selected' : ''
-          }`}
+          className={`movies-card__button ${newButton} `}
           onClick={saveMovieHandler}
+          disabled={isMovieSaved}
         >
           Сохранить
         </button>
       )}
 
       {location.pathname === '/saved-movies' && (
-        <button
-          className="movies-card__button movies-card__button-cross"
-          onClick={deleteMovieHandler}
-        >
+        <button className="movies-card__button movies-card__button-cross" onClick={deleteMovieHandler}>
           Удалить
         </button>
       )}

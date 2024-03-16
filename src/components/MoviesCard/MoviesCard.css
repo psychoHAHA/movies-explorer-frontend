@@ -36,6 +36,10 @@
   opacity: .7;
 }
 
+.movies-card__button:disabled {
+  opacity: .7;
+}
+
 .movies-card__container {
   display: flex;
   flex-direction: row;
