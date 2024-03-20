@@ -116,18 +116,6 @@ export default function MoviesCard({ movie }) {
           onClick={handleDeleteMovie}
         ></button>
       )}
-
-      {/* {location.pathname === '/movies' && (
-        <button className={`movies-card__button`} onClick={saveMovieHandler} disabled={isMovieSaved}>
-          Сохранить
-        </button>
-      )}
-
-      {location.pathname === '/saved-movies' && (
-        <button className="movies-card__button movies-card__button-cross" onClick={deleteMovieHandler}>
-          Удалить
-        </button>
-      )} */}
     </li>
   )
 }
