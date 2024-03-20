@@ -4,6 +4,8 @@ import { MoviesContext } from '../../contexts/MoviesContext'
 
 import './Movies.css'
 
+import Preloader from '../Preloader/Preloader'
+
 import SearchForm from './../SearchForm/SearchForm'
 import MoviesCardList from './../MoviesCardList/MoviesCardList'
 import ButtonMore from './../ButtonMore/ButtonMore'
@@ -65,6 +67,8 @@ export default function Movies({ getAllMovies }) {
   const [searchedMovies, setSearchedMovies] = useState([])
   const [moviesToRender, setMoviesToRender] = useState([])
 
+  const [isLoading, setIsLoading] = useState(false)
+
   const [moviesFilter, setMoviesFilter] = useState(getMoviesSearchQuery() || { query: '', isShort: false })
 
   const [index, setIndex] = useState(initialCount)
@@ -118,10 +122,12 @@ export default function Movies({ getAllMovies }) {
           console.error(err)
         })
     } else {
+      setIsLoading(true)
       setMovieSearch(newMoviesFilter)
       setMoviesFilter(newMoviesFilter)
-
       handleFilterMovies(moviesList, newMoviesFilter)
+
+      setIsLoading(false)
     }
   }
 
@@ -152,11 +158,19 @@ export default function Movies({ getAllMovies }) {
         onHandleShortChange={handleShortChange}
         moviesFilter={moviesFilter}
       />
-      <section className="movies">
-        <MoviesCardList moviesToShow={moviesToShow} />
+      {isLoading ? (
+        <Preloader />
+      ) : (
+        <section className="movies">
+          {moviesToRender.length !== 0 ? (
+            <MoviesCardList moviesToShow={moviesToShow} />
+          ) : (
+            moviesList.length !== 0 && <p>Ничего не найдено</p>
+          )}
 
-        {!isCompleted && <ButtonMore onClick={handleShowMore} />}
-      </section>
+          {!isCompleted && <ButtonMore onClick={handleShowMore} />}
+        </section>
+      )}
     </main>
   )
 }

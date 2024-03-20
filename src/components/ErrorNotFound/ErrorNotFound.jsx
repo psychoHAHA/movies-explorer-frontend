@@ -1,3 +1,5 @@
+// import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import './ErrorNotFound.css'
 
 export default function ErrorNotFound() {
@@ -9,7 +11,12 @@ export default function ErrorNotFound() {
             <h1 className="error__title">404</h1>
             <p className="error__subtitle">Страница не найдена</p>
           </div>
-          <button className='error__button'>Назад</button>
+          <Link to="/" className="error__button">
+            Назад
+          </Link>
+          {/* <button to="/" className="error__button">
+            <Link to="/">Назад</Link>
+          </button> */}
         </div>
       </div>
     </>

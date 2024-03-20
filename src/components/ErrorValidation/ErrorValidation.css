@@ -9,3 +9,7 @@
   transition: ease-in-out 0.2s;
   padding-top: 4px;
 }
+
+.error-validation__search {
+  padding-top: 10px;
+}

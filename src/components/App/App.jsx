@@ -60,7 +60,7 @@ function App() {
       movieId,
     }
   }
-  
+
   function checkToken(token) {
     const path = location.pathname
     mainApi
@@ -92,8 +92,6 @@ function App() {
     if (loggedIn) {
       const token = localStorage.getItem('token')
 
-      console.log(token)
-
       mainApi.setAuthorization(token)
       Promise.all([mainApi.getUserInfo(), mainApi.getMovies()])
         .then(([userData, savedMovies]) => {
@@ -102,36 +100,46 @@ function App() {
         })
         .catch((err) => {
           console.log(err)
+          alert(`Что-то пошло не так... ${err}`)
         })
     }
   }, [loggedIn])
-
-  const handleRegister = (name, email, password) => {
-    return mainApi.register(name, email, password).then((res) => {
-      if (!res.ok) {
-        return Promise.reject(res)
-      } else {
-        return res.json().then((res) => {
-          if (res._id) {
-            handleLogin({ email, password })
-          }
-          navigate('/signin')
-        })
-      }
-    })
-  }
 
   const handleLogin = (email, password) => {
     return mainApi.authorize(email, password).then((res) => {
       if (!res.ok) {
         return Promise.reject(res)
       } else {
-        return res.json().then((res) => {
-          setLoggedIn(true)
-          localStorage.setItem('token', res.token)
-          localStorage.setItem('loggedIn', 'true')
-          navigate('/movies')
-        })
+        return res
+          .json()
+          .then((res) => {
+            setLoggedIn(true)
+            localStorage.setItem('token', res.token)
+            localStorage.setItem('loggedIn', 'true')
+            navigate('/movies')
+          })
+          .catch((err) => {
+            console.log(err)
+            alert(`Что-то пошло не так... ${err}`)
+          })
+      }
+    })
+  }
+
+  const handleRegister = (name, email, password) => {
+    return mainApi.register(name, email, password).then((res) => {
+      if (!res.ok) {
+        return Promise.reject(res)
+      } else {
+        return res
+          .json()
+          .then((res) => {
+            if (res._id) {
+              handleLogin(email, password)
+              navigate('/movies')
+            }
+          })
+          .catch((err) => console.log(err))
       }
     })
   }
@@ -146,26 +154,46 @@ function App() {
   }
 
   const getAllMovies = () => {
-    return movieApi.getMovies().then((movies) => {
-      const adaptedMovies = movies.map((movie) => moviesData(movie))
-      setMoviesList(adaptedMovies)
-      setIsApiError(false)
-      return adaptedMovies
-    })
+    return movieApi
+      .getMovies()
+      .then((movies) => {
+        const adaptedMovies = movies.map((movie) => moviesData(movie))
+        setMoviesList(adaptedMovies)
+        setIsApiError(false)
+        return adaptedMovies
+      })
+      .catch((err) => console.log(err))
   }
 
   const saveMovie = (movie) => {
-    return mainApi.createMovie(movie).then((movieData) => {
-      setSavedMoviesList([...savedMoviesList, movieData])
-    })
+    return mainApi
+      .createMovie(movie)
+      .then((movieData) => {
+        setSavedMoviesList([...savedMoviesList, movieData])
+      })
+      .catch((err) => console.log(err))
   }
+
+  // const deleteMovie = (movieId) => {
+  //   const savedMovie = savedMoviesList.find((item) => item.movieId === movieId)
+  //   return mainApi
+  //     .deleteMovie(savedMovie._id)
+  //     .then((res) => {
+  //       setSavedMoviesList(savedMoviesList.filter((movie) => movie._id !== savedMovie._id))
+  //       return res
+  //     })
+  //     .catch((err) => console.log(err))
+  // }
 
   const deleteMovie = (movieId) => {
     const savedMovie = savedMoviesList.find((item) => item.movieId === movieId)
-    return mainApi.deleteMovie(savedMovie._id).then((res) => {
-      setSavedMoviesList(savedMoviesList.filter((movie) => movie._id !== savedMovie._id))
-      return res
-    })
+    return mainApi
+      .deleteMovie(savedMovie._id)
+      .then((res) => {
+        setSavedMoviesList(savedMoviesList.filter((movie) => movie._id !== savedMovie._id))
+        return res
+      })
+      .catch((err) => console.log(err))
   }
 
   return (

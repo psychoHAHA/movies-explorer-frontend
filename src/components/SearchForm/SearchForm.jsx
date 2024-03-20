@@ -1,4 +1,5 @@
 import './SearchForm.css'
+import '../ErrorValidation/ErrorValidation.css'
 
 import { useForm } from 'react-hook-form'
 
@@ -16,7 +17,11 @@ export default function SearchForm({ onSearchFormSubmit, onHandleShortChange, mo
     mode: 'onSubmit',
   })
 
-  const { handleSubmit, register } = methods
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = methods
 
   return (
     <>
@@ -28,9 +33,13 @@ export default function SearchForm({ onSearchFormSubmit, onHandleShortChange, mo
             type="search"
             className="search-form__input"
             placeholder="Фильм"
+            {...register('search', {
+              required: 'Введите ключевое слово',
+            })}
           />
           <ButtonSearch />
         </form>
+        <span className="error-validation error-validation__search">{errors.search?.message}</span>
         <FilterCheckbox name={'isShort'} register={register} onCheckboxChange={onHandleShortChange} />
       </section>
     </>

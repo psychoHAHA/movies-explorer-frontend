@@ -61,7 +61,7 @@ export default function SavedMovies() {
             {moviesToRender.length !== 0 ? (
               <MoviesCardList moviesToShow={moviesToRender} />
             ) : (
-              savedMoviesList.length !== 0 && console.log(123)
+              savedMoviesList.length !== 0
             )}
           </div>
         )}

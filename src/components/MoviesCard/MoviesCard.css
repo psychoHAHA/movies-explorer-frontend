@@ -66,7 +66,7 @@
   border-radius: 2px;
 }
 
-.movies-card__button-selected {
+.movies-card__button_selected {
   font-size: 0;
   background-image: url("../../images/imageGalka.svg");
   background-position: center;
@@ -77,7 +77,11 @@
   height: 21px;
 }
 
-.movies-card__button-cross {
+.movies-card__button_unselected {
+  background-color: #313131;
+}
+
+.movies-card__button_cross {
   font-size: 0;
   background-image: url("../../images/imageCross.svg");
   background-position: center;
@@ -87,4 +91,17 @@
   padding: 0;
   width: 21px;
   height: 21px;
+}
+
+@media screen and (min-width: 880px) {
+  .movies-card__button {
+    opacity: 0;
+    transition: all ease .2s;
+  }
+
+  .movies-card:hover {
+    .movies-card__button {
+      opacity: 1;
+    }
+  }
 }

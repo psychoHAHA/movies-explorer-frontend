@@ -10,14 +10,18 @@ export default function MoviesCard({ movie }) {
 
   const { duration, image: imageURL, nameRU, movieId, trailerLink } = movie
 
-  useEffect(() => {
-    const isSaved = savedMoviesList.some((savedMovie) => savedMovie.movieId === movie.movieId)
-    setIsMovieSaved(isSaved)
-  }, [savedMoviesList, movie])
-
-  const [back, setBack] = useState(true)
-
   const [isMovieSaved, setIsMovieSaved] = useState(false)
+
+  // useEffect(() => {
+  //   const isSaved = savedMoviesList.some((savedMovie) => savedMovie.movieId === movie.movieId)
+  //   setIsMovieSaved()
+  // }, [savedMoviesList, movie])
+
+  useEffect(() => {
+    if (savedMoviesList.some((savedMovie) => savedMovie.movieId === movie.movieId)) {
+      setIsMovieSaved(true)
+    }
+  }, [savedMoviesList, movie])
 
   const location = useLocation()
 
@@ -25,16 +29,39 @@ export default function MoviesCard({ movie }) {
     return `${Math.floor(m / 60)}ч ${m % 60}м`
   }
 
-  const saveMovieHandler = () => {
+  // const handleSaveMovie = () => {
+  //   if (!isMovieSaved) {
+  //     saveMovie(movie)
+  //       .then(() => {
+  //         setIsMovieSaved(true)
+  //         console.log(isMovieSaved)
+  //       })
+  //       .catch((err) => {
+  //         console.error(err)
+  //         console.log(movie)
+  //       })
+  //   } else {
+  //     deleteMovie(movieId)
+  //       .then((res) => {
+  //         setIsMovieSaved(false)
+  //         console.log(isMovieSaved)
+  //         console.log(res.message)
+  //       })
+  //       .catch((err) => {
+  //         console.log(err)
+  //       })
+  //   }
+  // }
+
+  const handleToggleMovie = () => {
     if (!isMovieSaved) {
       saveMovie(movie)
         .then(() => {
           setIsMovieSaved(true)
-          changeButton()
+          console.log(isMovieSaved)
         })
         .catch((err) => {
           console.error(err)
-          console.log(movie)
         })
     } else {
       deleteMovie(movieId)
@@ -43,12 +70,12 @@ export default function MoviesCard({ movie }) {
           console.log(res.message)
         })
         .catch((err) => {
-          console.log(err)
+          console.error(err)
         })
     }
   }
 
-  const deleteMovieHandler = () => {
+  const handleDeleteMovie = () => {
     deleteMovie(movieId)
       .then((res) => {
         console.log(res.message)
@@ -57,12 +84,6 @@ export default function MoviesCard({ movie }) {
         console.error(err)
       })
   }
-
-  const changeButton = () => {
-    setBack(!back)
-  }
-
-  const newButton = back ? '' : 'movies-card__button-selected'
 
   return (
     <li className="movies-card">
@@ -82,10 +103,22 @@ export default function MoviesCard({ movie }) {
 
       {location.pathname === '/movies' && (
         <button
-          className={`movies-card__button ${newButton} `}
-          onClick={saveMovieHandler}
-          disabled={isMovieSaved}
+          className={`movies-card__button movies-card__button${isMovieSaved ? '_selected' : '_unselected'}`}
+          onClick={handleToggleMovie}
         >
+          Сохранить
+        </button>
+      )}
+
+      {location.pathname === '/saved-movies' && (
+        <button
+          className="movies-card__button movies-card__button_cross"
+          onClick={handleDeleteMovie}
+        ></button>
+      )}
+
+      {/* {location.pathname === '/movies' && (
+        <button className={`movies-card__button`} onClick={saveMovieHandler} disabled={isMovieSaved}>
           Сохранить
         </button>
       )}
@@ -94,7 +127,7 @@ export default function MoviesCard({ movie }) {
         <button className="movies-card__button movies-card__button-cross" onClick={deleteMovieHandler}>
           Удалить
         </button>
-      )}
+      )} */}
     </li>
   )
 }

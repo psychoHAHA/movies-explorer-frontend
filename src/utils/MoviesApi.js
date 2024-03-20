@@ -16,7 +16,6 @@ class MovieApi {
     }
   }
 
-  // Get movies
   getMovies() {
     return fetch(`${this._baseUrl}`, {
       method: 'GET',
