@@ -173,18 +173,7 @@ function App() {
       })
       .catch((err) => console.log(err))
   }
-
-  // const deleteMovie = (movieId) => {
-  //   const savedMovie = savedMoviesList.find((item) => item.movieId === movieId)
-  //   return mainApi
-  //     .deleteMovie(savedMovie._id)
-  //     .then((res) => {
-  //       setSavedMoviesList(savedMoviesList.filter((movie) => movie._id !== savedMovie._id))
-  //       return res
-  //     })
-  //     .catch((err) => console.log(err))
-  // }
-
+  
   const deleteMovie = (movieId) => {
     const savedMovie = savedMoviesList.find((item) => item.movieId === movieId)
     return mainApi

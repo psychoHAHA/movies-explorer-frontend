@@ -78,7 +78,7 @@ export default function MoviesCard({ movie }) {
   const handleDeleteMovie = () => {
     deleteMovie(movieId)
       .then((res) => {
-        console.log(res.message)
+        console.log(res)
       })
       .catch((err) => {
         console.error(err)
@@ -116,6 +116,18 @@ export default function MoviesCard({ movie }) {
           onClick={handleDeleteMovie}
         ></button>
       )}
+
+      {/* {location.pathname === '/movies' && (
+        <button className={`movies-card__button `} onClick={handleToggleMovie} disabled={isMovieSaved}>
+          Сохранить
+        </button>
+      )}
+
+      {location.pathname === '/saved-movies' && (
+        <button className="movies-card__button movies-card__button-cross" onClick={handleDeleteMovie}>
+          Удалить
+        </button>
+      )} */}
     </li>
   )
 }
