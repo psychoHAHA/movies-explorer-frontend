@@ -126,22 +126,32 @@ function App() {
     })
   }
 
-  const handleRegister = (name, email, password) => {
-    return mainApi.register(name, email, password).then((res) => {
-      if (!res.ok) {
-        return Promise.reject(res)
-      } else {
-        return res
-          .json()
-          .then((res) => {
-            if (res._id) {
-              handleLogin(email, password)
-              navigate('/movies')
-            }
-          })
-          .catch((err) => console.log(err))
-      }
-    })
+  // const handleRegister = (name, email, password) => {
+  //   return mainApi.register(name, email, password).then((res) => {
+  //     if (!res.ok) {
+  //       return Promise.reject(res)
+  //     } else {
+  //       return res
+  //         .json()
+  //         .then((res) => {
+  //           if (res._id) {
+  //             handleLogin(email, password)
+  //             navigate('/movies')
+  //           }
+  //         })
+  //         .catch((err) => console.log(err))
+  //     }
+  //   })
+  // }
+
+  const handleRegister = async (name, email, password) => {
+    try {
+      const userDataReg = await mainApi.register(name, email, password)
+      setCurrentUser(userDataReg)
+      await handleLogin(email, password)
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   const handleLogout = () => {
@@ -169,21 +179,45 @@ function App() {
     return mainApi
       .createMovie(movie)
       .then((movieData) => {
+        console.log(movie);
         setSavedMoviesList([...savedMoviesList, movieData])
       })
       .catch((err) => console.log(err))
   }
   
+  // const deleteMovie = (movieId) => {
+  //   const savedMovie = savedMoviesList.find((item) => item.movieId === movieId)
+  //   return mainApi
+  //     .deleteMovie(savedMovie._id)
+  //     .then((res) => {
+  //       console.log(savedMovie);
+  //       console.log(savedMovie._id);
+  //       console.log(savedMovie.movieId);
+  //       console.log(movieId);
+  //       setSavedMoviesList(savedMoviesList.filter((movie) => movie._id !== savedMovie._id))
+  //       return res
+  //     })
+  //     .catch((err) => console.log(err))
+  // }
+
   const deleteMovie = (movieId) => {
-    const savedMovie = savedMoviesList.find((item) => item.movieId === movieId)
-    return mainApi
-      .deleteMovie(savedMovie._id)
-      .then((res) => {
-        setSavedMoviesList(savedMoviesList.filter((movie) => movie._id !== savedMovie._id))
-        return res
-      })
-      .catch((err) => console.log(err))
-  }
+    const savedMovie = savedMoviesList.find((item) => item.movieId === movieId);
+    if (savedMovie) {
+      return mainApi
+        .deleteMovie(savedMovie._id)
+        .then((res) => {
+          console.log(savedMovie);
+          console.log(savedMovie._id);
+          setSavedMoviesList(savedMoviesList.filter((movie) => movie._id !== savedMovie._id));
+          return res;
+        })
+        .catch((err) => console.log(err));
+    } else {
+      console.log("Movie not found in the saved movies list.");
+      // handle the case where savedMovie is undefined
+      return Promise.resolve(); // or any other appropriate action
+    }
+  };
 
   return (
     <>

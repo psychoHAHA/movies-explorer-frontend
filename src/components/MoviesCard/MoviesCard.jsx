@@ -14,7 +14,7 @@ export default function MoviesCard({ movie }) {
 
   // useEffect(() => {
   //   const isSaved = savedMoviesList.some((savedMovie) => savedMovie.movieId === movie.movieId)
-  //   setIsMovieSaved()
+  //   setIsMovieSaved(isSaved)
   // }, [savedMoviesList, movie])
 
   useEffect(() => {
@@ -58,6 +58,7 @@ export default function MoviesCard({ movie }) {
       saveMovie(movie)
         .then(() => {
           setIsMovieSaved(true)
+          console.log(movie);
           console.log(isMovieSaved)
         })
         .catch((err) => {
@@ -68,6 +69,7 @@ export default function MoviesCard({ movie }) {
         .then((res) => {
           setIsMovieSaved(false)
           console.log(res.message)
+          console.log(movieId);
         })
         .catch((err) => {
           console.error(err)
