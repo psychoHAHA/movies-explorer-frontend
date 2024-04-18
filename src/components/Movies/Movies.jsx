@@ -4,7 +4,7 @@ import { MoviesContext } from '../../contexts/MoviesContext'
 
 import './Movies.css'
 
-import Preloader from '../Preloader/Preloader'
+import Preloader from '../Preloader/Preloader.jsx'
 
 import SearchForm from './../SearchForm/SearchForm'
 import MoviesCardList from './../MoviesCardList/MoviesCardList'
@@ -103,31 +103,40 @@ export default function Movies({ getAllMovies }) {
   }
 
   const handleShowMore = () => {
+    console.log(isLoading)
     setMoviesToShow(getMoviesShow(moviesToRender, moviesToShow, index, index + nextCount))
     setIndex(index + nextCount)
     checkIfCompleted(index + nextCount)
   }
 
   const handleSearchFormSubmit = (data) => {
-    const newMoviesFilter = { ...moviesFilter, query: data.search }
-    if (moviesList.length === 0) {
-      getAllMovies()
-        .then((adaptedMovies) => {
-          setMovieSearch(newMoviesFilter)
-          setMoviesFilter(newMoviesFilter)
-
-          handleFilterMovies(adaptedMovies, newMoviesFilter)
-        })
-        .catch((err) => {
-          console.error(err)
-        })
-    } else {
+    try {
       setIsLoading(true)
-      setMovieSearch(newMoviesFilter)
-      setMoviesFilter(newMoviesFilter)
-      handleFilterMovies(moviesList, newMoviesFilter)
+      const newMoviesFilter = { ...moviesFilter, query: data.search }
+      if (moviesList.length === 0) {
+        getAllMovies()
+          .then((adaptedMovies) => {
+            setMovieSearch(newMoviesFilter)
+            setMoviesFilter(newMoviesFilter)
+            console.log(isLoading)
 
+            handleFilterMovies(adaptedMovies, newMoviesFilter)
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+      } else {
+        setIsLoading(true)
+        setMovieSearch(newMoviesFilter)
+        setMoviesFilter(newMoviesFilter)
+        handleFilterMovies(moviesList, newMoviesFilter)
+      }
       setIsLoading(false)
+    } catch (err) {
+      console.log(err)
+    } finally {
+      setIsLoading(false)
+      console.log(isLoading)
     }
   }
 
@@ -157,6 +166,7 @@ export default function Movies({ getAllMovies }) {
         onSearchFormSubmit={handleSearchFormSubmit}
         onHandleShortChange={handleShortChange}
         moviesFilter={moviesFilter}
+        isLoading={isLoading}
       />
       {isLoading ? (
         <Preloader />

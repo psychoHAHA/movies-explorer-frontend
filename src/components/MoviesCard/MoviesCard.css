@@ -98,6 +98,9 @@
     opacity: 0;
     transition: all ease .2s;
   }
+  .movies-card__button_selected {
+    opacity: 1;
+  }
 
   .movies-card:hover {
     .movies-card__button {

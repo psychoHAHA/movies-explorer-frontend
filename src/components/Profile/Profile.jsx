@@ -91,13 +91,15 @@ import { CurrentUserContext } from './../../contexts/CurrentUserContext'
 
 import mainApi from '../../utils/MainApi.js'
 
-export default function Profile({ onLogout }) {
+export default function Profile({ onLogout, openPopup }) {
   const { currentUser } = useContext(CurrentUserContext)
 
+  const [isVisibleButton, setIsVisibleButton] = useState(false);
+
   const [name, setName] = useState(currentUser.name)
-  const [setEditName] = useState(currentUser.name)
+  const [editName, setEditName] = useState(currentUser.name)
   const [email, setEmail] = useState(currentUser.email)
-  const [setEditEmail] = useState(currentUser.email)
+  const [editEmail, setEditEmail] = useState(currentUser.email)
 
   const handleSubmit = (evt) => {
     evt.preventDefault()
@@ -107,18 +109,34 @@ export default function Profile({ onLogout }) {
       .then(() => {
         setEditName(name)
         setEditEmail(email)
+        openPopup('Профиль изменен!')
       })
-      .catch((error) => console.log(error))
+      .catch((error) => {
+        openPopup(`Что-то пошло не так... ${error}`)
+        console.log(error);
+      })
   }
 
   const handleNameChange = (evt) => {
     const value = evt.target.value
     setName(value)
+
+    if (value !== editName) {
+      setIsVisibleButton(true)
+    } else {
+      setIsVisibleButton(false)
+    }
   }
 
   const handleEmailChange = (evt) => {
     const value = evt.target.value
     setEmail(value)
+
+    if (value !== editEmail) {
+      setIsVisibleButton(true)
+    } else {
+      setIsVisibleButton(false)
+    }
   }
 
   const logoutClickHandler = (evt) => {
@@ -155,7 +173,7 @@ export default function Profile({ onLogout }) {
           </div>
 
           <div className="profile__buttons">
-            <button className="profile__button profile__button-edit">Редактировать</button>
+            <button className="profile__button profile__button-edit" disabled={!isVisibleButton}>Редактировать</button>
             <button className="profile__button profile__button-logout" onClick={logoutClickHandler}>
               Выйти из аккаунта
             </button>

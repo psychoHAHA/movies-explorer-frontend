@@ -67,6 +67,12 @@ export default function Login({ onLogin }) {
           Войти
         </button>
       </form>
+      <p className="auth__text">
+        Еще не зарегистрировались? 
+        <a href="/signup" className="auth__link">
+          Регистрация
+        </a>
+      </p>
     </div>
   )
 }

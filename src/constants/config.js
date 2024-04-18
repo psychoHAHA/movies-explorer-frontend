@@ -4,8 +4,8 @@ const CONFIG = {
   shortMovieDuration: 40,
   screenBreakPoints: {
     mobileWidth: 320,
-    tabletWidth: 768,
-    desktopWidth: 1280,
+    tabletWidth: 645,
+    desktopWidth: 880,
   },
   initialCountToShow: {
     mobileCount: 5,

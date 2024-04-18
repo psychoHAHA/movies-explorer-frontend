@@ -1,6 +1,6 @@
 import './MoviesCard.css'
 
-import { useState, useContext, useEffect } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 
 import { MoviesContext } from './../../contexts/MoviesContext'
@@ -8,20 +8,18 @@ import { MoviesContext } from './../../contexts/MoviesContext'
 export default function MoviesCard({ movie }) {
   const { savedMoviesList, saveMovie, deleteMovie } = useContext(MoviesContext)
 
-  const { duration, image: imageURL, nameRU, movieId, trailerLink } = movie
+  const { duration, image: imageURL, nameRU, trailerLink } = movie
 
-  const [isMovieSaved, setIsMovieSaved] = useState(false)
+  const isLiked = savedMoviesList.some((m) => m.id === movie.id)
 
-  // useEffect(() => {
-  //   const isSaved = savedMoviesList.some((savedMovie) => savedMovie.movieId === movie.movieId)
-  //   setIsMovieSaved(isSaved)
-  // }, [savedMoviesList, movie])
+  const [isMovieSaved, setIsMovieSaved] = useState(isLiked)
+
+  const likeButtonClassName = `movies-card__button ${isMovieSaved ? 'movies-card__button_selected' : 'movies-card__button_unselected'}`
 
   useEffect(() => {
-    if (savedMoviesList.some((savedMovie) => savedMovie.movieId === movie.movieId)) {
-      setIsMovieSaved(true)
-    }
-  }, [savedMoviesList, movie])
+    const savedMovieIds = JSON.parse(localStorage.getItem('savedMovies')) || []
+    setIsMovieSaved(savedMovieIds.includes(movie.movieId))
+  }, [movie.movieId])
 
   const location = useLocation()
 
@@ -29,62 +27,29 @@ export default function MoviesCard({ movie }) {
     return `${Math.floor(m / 60)}ч ${m % 60}м`
   }
 
-  // const handleSaveMovie = () => {
-  //   if (!isMovieSaved) {
-  //     saveMovie(movie)
-  //       .then(() => {
-  //         setIsMovieSaved(true)
-  //         console.log(isMovieSaved)
-  //       })
-  //       .catch((err) => {
-  //         console.error(err)
-  //         console.log(movie)
-  //       })
-  //   } else {
-  //     deleteMovie(movieId)
-  //       .then((res) => {
-  //         setIsMovieSaved(false)
-  //         console.log(isMovieSaved)
-  //         console.log(res.message)
-  //       })
-  //       .catch((err) => {
-  //         console.log(err)
-  //       })
-  //   }
-  // }
-
   const handleToggleMovie = () => {
-    if (!isMovieSaved) {
+    if (!isLiked) {
       saveMovie(movie)
         .then(() => {
+          const savedMovieIds = JSON.parse(localStorage.getItem('savedMovies')) || []
           setIsMovieSaved(true)
-          console.log(movie);
-          console.log(isMovieSaved)
+          localStorage.setItem('savedMovies', JSON.stringify([...savedMovieIds, movie.id]))
         })
         .catch((err) => {
           console.error(err)
         })
     } else {
-      deleteMovie(movieId)
-        .then((res) => {
+      deleteMovie(movie.movieId)
+        .then(() => {
+          const savedMovieIds = JSON.parse(localStorage.getItem('savedMovies')) || []
+          const updatedMovieIds = savedMovieIds.filter((id) => id !== movie.id)
           setIsMovieSaved(false)
-          console.log(res.message)
-          console.log(movieId);
+          localStorage.setItem('savedMovies', JSON.stringify(updatedMovieIds))
         })
         .catch((err) => {
           console.error(err)
         })
     }
-  }
-
-  const handleDeleteMovie = () => {
-    deleteMovie(movieId)
-      .then((res) => {
-        console.log(res)
-      })
-      .catch((err) => {
-        console.error(err)
-      })
   }
 
   return (
@@ -103,33 +68,16 @@ export default function MoviesCard({ movie }) {
         <p className="movies-card__time">{timeConvertor(duration)}</p>
       </div>
 
-      {location.pathname === '/movies' && (
-        <button
-          className={`movies-card__button movies-card__button${isMovieSaved ? '_selected' : '_unselected'}`}
-          onClick={handleToggleMovie}
-        >
-          Сохранить
-        </button>
-      )}
-
-      {location.pathname === '/saved-movies' && (
+      {location.pathname === '/saved-movies' ? (
         <button
           className="movies-card__button movies-card__button_cross"
-          onClick={handleDeleteMovie}
+          onClick={handleToggleMovie}
         ></button>
-      )}
-
-      {/* {location.pathname === '/movies' && (
-        <button className={`movies-card__button `} onClick={handleToggleMovie} disabled={isMovieSaved}>
+      ) : (
+        <button className={likeButtonClassName} onClick={handleToggleMovie}>
           Сохранить
         </button>
       )}
-
-      {location.pathname === '/saved-movies' && (
-        <button className="movies-card__button movies-card__button-cross" onClick={handleDeleteMovie}>
-          Удалить
-        </button>
-      )} */}
     </li>
   )
 }

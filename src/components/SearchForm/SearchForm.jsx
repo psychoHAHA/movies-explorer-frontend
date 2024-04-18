@@ -1,6 +1,8 @@
 import './SearchForm.css'
 import '../ErrorValidation/ErrorValidation.css'
 
+import React from 'react'
+
 import { useForm } from 'react-hook-form'
 
 import InputSearch from '../InputSearch/InputSearch'

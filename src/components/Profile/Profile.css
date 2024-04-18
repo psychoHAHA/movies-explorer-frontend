@@ -72,9 +72,14 @@
   transition: all .2s ease;
 }
 
-.profile__button-edit:hover {
-  color: #424242;
+.profile__button:disabled {
+  opacity: .1;
+  
 }
+
+/* .profile__button-edit:hover {
+  color: #424242;
+} */
 
 .profile__button-logout {
   font-weight: 500;
