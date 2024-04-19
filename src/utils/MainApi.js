@@ -32,18 +32,18 @@ class MainApi {
 
   setUserInfo({ name, email }) {
     return fetch(`${this._baseUrl}/users/me`, {
-      method: 'PATCH',
+      method: "PATCH",
       headers: this._headers,
       body: JSON.stringify({ name, email }),
     }).then((res) => {
       if (res.ok) {
-        return res.json()
+        return res.json();
       } else {
         return res.json().then((err) => {
-          return Promise.reject(err)
-        })
+          return Promise.reject(err);
+        });
       }
-    })
+    });
   }
 
   register(name, email, password) {
@@ -79,38 +79,6 @@ class MainApi {
       body: JSON.stringify(data),
     }).then(this._getResponse)
   }
-
-  // createMovie({
-  //   country,
-  //   director,
-  //   duration,
-  //   year,
-  //   description,
-  //   image,
-  //   trailerLink,
-  //   thumbnail,
-  //   nameRU,
-  //   nameEN,
-  //   movieId,
-  // }) {
-  //   return fetch(`${this._baseUrl}/movies`, {
-  //     method: 'POST',
-  //     headers: this._headers,
-  //     body: JSON.stringify({
-  //       country,
-  //       director,
-  //       duration,
-  //       year,
-  //       description,
-  //       image,
-  //       trailerLink,
-  //       thumbnail,
-  //       nameRU,
-  //       nameEN,
-  //       movieId,
-  //     }),
-  //   }).then(this._getResponse)
-  // }
 
   deleteMovie(movieId) {
     return fetch(`${this._baseUrl}/movies/${movieId}`, {
