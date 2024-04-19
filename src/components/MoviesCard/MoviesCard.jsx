@@ -14,7 +14,10 @@ export default function MoviesCard({ movie }) {
 
   const [isMovieSaved, setIsMovieSaved] = useState(isLiked)
 
-  const likeButtonClassName = `movies-card__button ${isMovieSaved ? 'movies-card__button_selected' : 'movies-card__button_unselected'}`
+  // useEffect(() => {
+  //   const isSaved = savedMoviesList.some((savedMovie) => savedMovie.movieId === movie.movieId)
+  //   setIsMovieSaved(isSaved)
+  // }, [savedMoviesList, movie])
 
   useEffect(() => {
     const savedMovieIds = JSON.parse(localStorage.getItem('savedMovies')) || []
@@ -33,7 +36,8 @@ export default function MoviesCard({ movie }) {
         .then(() => {
           const savedMovieIds = JSON.parse(localStorage.getItem('savedMovies')) || []
           setIsMovieSaved(true)
-          localStorage.setItem('savedMovies', JSON.stringify([...savedMovieIds, movie.id]))
+          console.log(movie);
+          console.log(isMovieSaved)
         })
         .catch((err) => {
           console.error(err)
@@ -44,7 +48,8 @@ export default function MoviesCard({ movie }) {
           const savedMovieIds = JSON.parse(localStorage.getItem('savedMovies')) || []
           const updatedMovieIds = savedMovieIds.filter((id) => id !== movie.id)
           setIsMovieSaved(false)
-          localStorage.setItem('savedMovies', JSON.stringify(updatedMovieIds))
+          console.log(res.message)
+          console.log(movieId);
         })
         .catch((err) => {
           console.error(err)
