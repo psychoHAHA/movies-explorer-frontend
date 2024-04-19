@@ -10,18 +10,15 @@ export default function MoviesCard({ movie }) {
 
   const { duration, image: imageURL, nameRU, trailerLink } = movie
 
-  const isLiked = savedMoviesList.some((m) => m.id === movie.id)
+  const isLiked = savedMoviesList.some((m) => m.movieId === movie.movieId)
 
   const [isMovieSaved, setIsMovieSaved] = useState(isLiked)
 
-  // useEffect(() => {
-  //   const isSaved = savedMoviesList.some((savedMovie) => savedMovie.movieId === movie.movieId)
-  //   setIsMovieSaved(isSaved)
-  // }, [savedMoviesList, movie])
+  const likeButtonClassName = `movies-card__button ${isMovieSaved ? 'movies-card__button_selected' : 'movies-card__button_unselected'}`
 
   useEffect(() => {
-    const savedMovieIds = JSON.parse(localStorage.getItem('savedMovies')) || []
-    setIsMovieSaved(savedMovieIds.includes(movie.movieId))
+    const savedMoviesIds = JSON.parse(localStorage.getItem('savedMovies')) || []
+    setIsMovieSaved(savedMoviesIds.includes(movie.movieId))
   }, [movie.movieId])
 
   const location = useLocation()
@@ -31,13 +28,12 @@ export default function MoviesCard({ movie }) {
   }
 
   const handleToggleMovie = () => {
-    if (!isLiked) {
+    if (!isMovieSaved) {
       saveMovie(movie)
         .then(() => {
-          const savedMovieIds = JSON.parse(localStorage.getItem('savedMovies')) || []
           setIsMovieSaved(true)
-          console.log(movie);
-          console.log(isMovieSaved)
+          const savedMoviesIds = JSON.parse(localStorage.getItem('savedMovies')) || []
+          localStorage.setItem('savedMovies', JSON.stringify([...savedMoviesIds, movie.id]))
         })
         .catch((err) => {
           console.error(err)
@@ -45,11 +41,12 @@ export default function MoviesCard({ movie }) {
     } else {
       deleteMovie(movie.movieId)
         .then(() => {
-          const savedMovieIds = JSON.parse(localStorage.getItem('savedMovies')) || []
-          const updatedMovieIds = savedMovieIds.filter((id) => id !== movie.id)
           setIsMovieSaved(false)
-          console.log(res.message)
-          console.log(movieId);
+          // Удаляем идентификатор фильма из массива сохраненных фильмов в localStorage
+          const savedMoviesIds = JSON.parse(localStorage.getItem('savedMovies')) || []
+          const updatedMovieIds = savedMoviesIds.filter((id) => id !== movie.id)
+          setIsMovieSaved(false)
+          localStorage.setItem('savedMovies', JSON.stringify(updatedMovieIds))
         })
         .catch((err) => {
           console.error(err)
