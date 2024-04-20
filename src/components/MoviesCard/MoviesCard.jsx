@@ -33,7 +33,7 @@ export default function MoviesCard({ movie }) {
         .then(() => {
           setIsMovieSaved(true)
           const savedMoviesIds = JSON.parse(localStorage.getItem('savedMovies')) || []
-          localStorage.setItem('savedMovies', JSON.stringify([...savedMoviesIds, movie.id]))
+          localStorage.setItem('savedMovies', JSON.stringify([...savedMoviesIds, movie.movieId]))
         })
         .catch((err) => {
           console.error(err)
@@ -41,10 +41,8 @@ export default function MoviesCard({ movie }) {
     } else {
       deleteMovie(movie.movieId)
         .then(() => {
-          setIsMovieSaved(false)
-          // Удаляем идентификатор фильма из массива сохраненных фильмов в localStorage
           const savedMoviesIds = JSON.parse(localStorage.getItem('savedMovies')) || []
-          const updatedMovieIds = savedMoviesIds.filter((id) => id !== movie.id)
+          const updatedMovieIds = savedMoviesIds.filter((id) => id !== movie.movieId)
           setIsMovieSaved(false)
           localStorage.setItem('savedMovies', JSON.stringify(updatedMovieIds))
         })

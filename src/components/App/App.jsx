@@ -513,12 +513,12 @@ function App() {
       .catch((err) => console.log(err))
   }
 
-  const saveMovie = (movie) => {
+  const saveMovie = (movie, movieId) => {
     return mainApi
       .createMovie(movie)
       .then((movieData) => {
         console.log(saveMovie)
-
+        console.log(movieId);
         console.log(movie)
         setSavedMoviesList([...savedMoviesList, movieData])
       })
