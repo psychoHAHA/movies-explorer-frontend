@@ -101,10 +101,10 @@ export default function MoviesCard({ movie }) {
 
   useEffect(() => {
     const savedMoviesIds = JSON.parse(localStorage.getItem('savedMovies')) || []
-    if (savedMoviesIds.includes(movie.id)) {
+    if (savedMoviesIds.includes(movie.movieId)) {
       setIsMovieSaved(true)
     }
-  }, [movie.id])
+  }, [movie.movieId])
 
   const location = useLocation()
 
