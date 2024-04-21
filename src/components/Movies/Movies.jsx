@@ -142,26 +142,26 @@ export default function Movies({ getAllMovies }) {
 
   const handleSearchFormSubmit = async (data) => {
     try {
-      setIsLoading(true);
-      const newMoviesFilter = { ...moviesFilter, query: data.search };
+      setIsLoading(true)
+      const newMoviesFilter = { ...moviesFilter, query: data.search }
       if (moviesList.length === 0) {
-        const adaptedMovies = await getAllMovies();
-        setMovieSearch(newMoviesFilter);
-        setMoviesFilter(newMoviesFilter);
-        handleFilterMovies(adaptedMovies, newMoviesFilter);
+        const adaptedMovies = await getAllMovies()
+        setMovieSearch(newMoviesFilter)
+        setMoviesFilter(newMoviesFilter)
+        handleFilterMovies(adaptedMovies, newMoviesFilter)
       } else {
-        setMovieSearch(newMoviesFilter);
-        setMoviesFilter(newMoviesFilter);
-        handleFilterMovies(moviesList, newMoviesFilter);
+        setMovieSearch(newMoviesFilter)
+        setMoviesFilter(newMoviesFilter)
+        handleFilterMovies(moviesList, newMoviesFilter)
       }
       // Небольшая задержка перед установкой isLoading в false
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      setIsLoading(false);
+      await new Promise((resolve) => setTimeout(resolve, 500))
+      setIsLoading(false)
     } catch (err) {
-      console.log(err);
-      setIsLoading(false);
+      console.log(err)
+      setIsLoading(false)
     }
-  };
+  }
 
   const handleShortChange = (e) => {
     const newMoviesFilter = { ...moviesFilter, isShort: e.target.checked }
