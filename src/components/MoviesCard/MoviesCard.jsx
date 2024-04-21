@@ -300,7 +300,6 @@ export default function MoviesCard({ movie }) {
         <button
           className={`movies-card__button ${isMovieSaved ? 'movies-card__button_selected' : 'movies-card__button_unselected'}`}
           onClick={handleToggleMovie}
-          disabled={isMovieSaved} // Добавляем этот атрибут, чтобы блокировать кнопку, если фильм уже сохранен
         >
           {isMovieSaved ? 'Удалить' : 'Сохранить'}
         </button>
