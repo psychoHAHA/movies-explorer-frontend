@@ -187,7 +187,7 @@ export default function MoviesCard({ movie }) {
 
   const { duration, image: imageURL, nameRU, trailerLink } = movie
 
-  const isLiked = savedMoviesList.some((m) => m.movieId === movie.movieId)
+  const isLiked = savedMoviesList.some((m) => m.id === movie.id)
 
   const [isMovieSaved, setIsMovieSaved] = useState(isLiked)
 
@@ -195,8 +195,8 @@ export default function MoviesCard({ movie }) {
 
   useEffect(() => {
     const savedMoviesIds = JSON.parse(localStorage.getItem('savedMovies')) || []
-    setIsMovieSaved(savedMoviesIds.includes(movie.movieId))
-  }, [movie.movieId])
+    setIsMovieSaved(savedMoviesIds.includes(movie.id))
+  }, [movie.id])
 
   const location = useLocation()
 
@@ -209,7 +209,7 @@ export default function MoviesCard({ movie }) {
         .then(() => {
           setIsMovieSaved(true)
           const savedMoviesIds = JSON.parse(localStorage.getItem('savedMovies')) || []
-          localStorage.setItem('savedMovies', JSON.stringify([...savedMoviesIds, movie.movieId]))
+          localStorage.setItem('savedMovies', JSON.stringify([...savedMoviesIds, movie.id]))
         })
         .catch((err) => {
           console.error(err)
@@ -218,7 +218,7 @@ export default function MoviesCard({ movie }) {
       deleteMovie(movie.movieId)
         .then(() => {
           const savedMoviesIds = JSON.parse(localStorage.getItem('savedMovies')) || []
-          const updatedMovieIds = savedMoviesIds.filter((id) => id !== movie.movieId)
+          const updatedMovieIds = savedMoviesIds.filter((id) => id !== movie.id)
           setIsMovieSaved(false)
           localStorage.setItem('savedMovies', JSON.stringify(updatedMovieIds))
         })
