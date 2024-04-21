@@ -109,28 +109,61 @@ export default function Movies({ getAllMovies }) {
     checkIfCompleted(index + nextCount)
   }
 
-  const handleSearchFormSubmit = async (data) => {
+//handleSearchFormSubmit
+
+  const handleSearchFormSubmitData = (data) => {
     try {
       setIsLoading(true)
       const newMoviesFilter = { ...moviesFilter, query: data.search }
       if (moviesList.length === 0) {
-        const adaptedMovies = await getAllMovies()
-        setMovieSearch(newMoviesFilter)
-        setMoviesFilter(newMoviesFilter)
-        handleFilterMovies(adaptedMovies, newMoviesFilter)
+        getAllMovies()
+          .then((adaptedMovies) => {
+            setMovieSearch(newMoviesFilter)
+            setMoviesFilter(newMoviesFilter)
+            console.log(isLoading)
+
+            handleFilterMovies(adaptedMovies, newMoviesFilter)
+          })
+          .catch((err) => {
+            console.log(err)
+          })
       } else {
+        setIsLoading(true)
         setMovieSearch(newMoviesFilter)
         setMoviesFilter(newMoviesFilter)
         handleFilterMovies(moviesList, newMoviesFilter)
       }
-      // Небольшая задержка перед установкой isLoading в false
-      await new Promise((resolve) => setTimeout(resolve, 500))
       setIsLoading(false)
     } catch (err) {
       console.log(err)
+    } finally {
       setIsLoading(false)
+      console.log(isLoading)
     }
   }
+
+  // const handleSearchFormSubmit = async (data) => {
+  //   try {
+  //     setIsLoading(true)
+  //     const newMoviesFilter = { ...moviesFilter, query: data.search }
+  //     if (moviesList.length === 0) {
+  //       const adaptedMovies = await getAllMovies()
+  //       setMovieSearch(newMoviesFilter)
+  //       setMoviesFilter(newMoviesFilter)
+  //       handleFilterMovies(adaptedMovies, newMoviesFilter)
+  //     } else {
+  //       setMovieSearch(newMoviesFilter)
+  //       setMoviesFilter(newMoviesFilter)
+  //       handleFilterMovies(moviesList, newMoviesFilter)
+  //     }
+  //     // Небольшая задержка перед установкой isLoading в false
+  //     await new Promise((resolve) => setTimeout(resolve, 500))
+  //     setIsLoading(false)
+  //   } catch (err) {
+  //     console.log(err)
+  //     setIsLoading(false)
+  //   }
+  // }
 
   const handleShortChange = (e) => {
     const newMoviesFilter = { ...moviesFilter, isShort: e.target.checked }
@@ -155,7 +188,7 @@ export default function Movies({ getAllMovies }) {
   return (
     <main className="main">
       <SearchForm
-        onSearchFormSubmit={handleSearchFormSubmit}
+        onSearchFormSubmit={handleSearchFormSubmitData}
         onHandleShortChange={handleShortChange}
         moviesFilter={moviesFilter}
         isLoading={isLoading}
