@@ -111,7 +111,7 @@ export default function MoviesCard({ movie }) {
     return `${Math.floor(m / 60)}ч ${m % 60}м`
   }
   const handleToggleMovie = () => {
-    if (!isLiked) {
+    if (!isMovieSaved) {
       saveMovie(movie)
         .then(() => {
           setIsMovieSaved(true)
