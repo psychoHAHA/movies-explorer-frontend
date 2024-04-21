@@ -247,15 +247,21 @@
 // }
 
 import './MoviesCard.css'
-import { useContext } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { MoviesContext } from './../../contexts/MoviesContext'
 
 export default function MoviesCard({ movie }) {
   const { savedMoviesList, saveMovie, deleteMovie } = useContext(MoviesContext)
-  const { duration, image: imageURL, nameRU, trailerLink, movieId } = movie
 
-  const isMovieSaved = savedMoviesList.some((savedMovie) => savedMovie.movieId === movieId)
+  const { duration, image: imageURL, nameRU, trailerLink } = movie
+
+  const [isMovieSaved, setIsMovieSaved] = useState(false)
+
+  useEffect(() => {
+    const isLiked = savedMoviesList.some((m) => m.movieId === movie.movieId)
+    setIsMovieSaved(isLiked)
+  }, [savedMoviesList, movie.movieId])
 
   const location = useLocation()
 
@@ -265,13 +271,27 @@ export default function MoviesCard({ movie }) {
 
   const handleToggleMovie = () => {
     if (!isMovieSaved) {
-      saveMovie(movie).catch((err) => {
-        console.error(err)
-      })
+      saveMovie(movie)
+        .then(() => {
+          setIsMovieSaved(true)
+          const savedMoviesIds = JSON.parse(localStorage.getItem('savedMovies')) || []
+          localStorage.setItem('savedMovies', JSON.stringify([...savedMoviesIds, movie.movieId]))
+        })
+        .catch((err) => {
+          console.error(err)
+        })
     } else {
-      deleteMovie(movieId).catch((err) => {
-        console.error(err)
-      })
+      deleteMovie(movie.movieId)
+        .then(() => {
+          const updatedMovieIds = savedMoviesList
+            .filter((m) => m.movieId !== movie.movieId)
+            .map((m) => m.movieId)
+          setIsMovieSaved(false)
+          localStorage.setItem('savedMovies', JSON.stringify(updatedMovieIds))
+        })
+        .catch((err) => {
+          console.error(err)
+        })
     }
   }
 
