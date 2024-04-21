@@ -77,35 +77,20 @@
 //     </li>
 //   )
 // }
-
 import './MoviesCard.css'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { MoviesContext } from './../../contexts/MoviesContext'
 
 export default function MoviesCard({ movie }) {
-  const { saveMovie, deleteMovie } = useContext(MoviesContext)
+  const { savedMoviesList, saveMovie, deleteMovie } = useContext(MoviesContext)
   const { duration, image: imageURL, nameRU, trailerLink, movieId } = movie
-  const [isMovieSaved, setIsMovieSaved] = useState(false)
+  const [isMovieSaved, setIsMovieSaved] = useState(savedMoviesList.some((m) => m.movieId === movieId))
   const location = useLocation()
 
   useEffect(() => {
-    const savedMoviesFromStorage = JSON.parse(sessionStorage.getItem('savedMovies')) || []
-    setIsMovieSaved(savedMoviesFromStorage.some((m) => m.movieId === movieId))
-  }, [movieId])
-
-  useEffect(() => {
-    const handleStorageChange = () => {
-      const savedMoviesFromStorage = JSON.parse(sessionStorage.getItem('savedMovies')) || []
-      setIsMovieSaved(savedMoviesFromStorage.some((m) => m.movieId === movieId))
-    }
-
-    window.addEventListener('storage', handleStorageChange)
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange)
-    }
-  }, [movieId])
+    setIsMovieSaved(savedMoviesList.some((m) => m.movieId === movieId))
+  }, [savedMoviesList, movieId])
 
   const timeConvertor = (m) => {
     return `${Math.floor(m / 60)}ч ${m % 60}м`
@@ -115,18 +100,12 @@ export default function MoviesCard({ movie }) {
     if (!isMovieSaved) {
       saveMovie(movie)
         .then(() => {
-          const savedMoviesFromStorage = JSON.parse(sessionStorage.getItem('savedMovies')) || []
-          const updatedSavedMoviesList = [...savedMoviesFromStorage, movie]
-          sessionStorage.setItem('savedMovies', JSON.stringify(updatedSavedMoviesList))
           setIsMovieSaved(true)
         })
         .catch((err) => console.log(err))
     } else {
       deleteMovie(movieId)
         .then(() => {
-          const savedMoviesFromStorage = JSON.parse(sessionStorage.getItem('savedMovies')) || []
-          const updatedSavedMoviesList = savedMoviesFromStorage.filter((m) => m.movieId !== movieId)
-          sessionStorage.setItem('savedMovies', JSON.stringify(updatedSavedMoviesList))
           setIsMovieSaved(false)
         })
         .catch((err) => console.log(err))
