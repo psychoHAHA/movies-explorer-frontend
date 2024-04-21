@@ -109,7 +109,7 @@ export default function Movies({ getAllMovies }) {
     checkIfCompleted(index + nextCount)
   }
 
-//handleSearchFormSubmit
+  //handleSearchFormSubmit
 
   const handleSearchFormSubmitData = (data) => {
     try {
@@ -133,6 +133,7 @@ export default function Movies({ getAllMovies }) {
         setMoviesFilter(newMoviesFilter)
         handleFilterMovies(moviesList, newMoviesFilter)
       }
+      new Promise((resolve) => setTimeout(resolve, 500))
       setIsLoading(false)
     } catch (err) {
       console.log(err)
