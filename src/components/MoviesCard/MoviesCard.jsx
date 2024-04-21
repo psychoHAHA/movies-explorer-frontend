@@ -83,7 +83,6 @@
 // }
 
 import './MoviesCard.css'
-
 import { useContext, useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { MoviesContext } from './../../contexts/MoviesContext'
@@ -93,16 +92,21 @@ export default function MoviesCard({ movie }) {
 
   const { duration, image: imageURL, nameRU, trailerLink } = movie
 
-  const [isMovieSaved, setIsMovieSaved] = useState(() => {
-    const savedMoviesIds = JSON.parse(localStorage.getItem('savedMovies')) || []
-    return savedMoviesIds.includes(movie.movieId)
-  })
-
-  const location = useLocation()
+  const [isMovieSaved, setIsMovieSaved] = useState(false)
 
   useEffect(() => {
-    setIsMovieSaved(savedMoviesList.some((m) => m.id === movie.id))
+    const isLiked = savedMoviesList.some((m) => m.id === movie.id)
+    setIsMovieSaved(isLiked)
   }, [savedMoviesList, movie.id])
+
+  useEffect(() => {
+    const savedMoviesIds = JSON.parse(localStorage.getItem('savedMovies')) || []
+    if (savedMoviesIds.includes(movie.id)) {
+      setIsMovieSaved(true)
+    }
+  }, [movie.id])
+
+  const location = useLocation()
 
   const timeConvertor = (m) => {
     return `${Math.floor(m / 60)}ч ${m % 60}м`
@@ -120,7 +124,7 @@ export default function MoviesCard({ movie }) {
           console.error(err)
         })
     } else {
-      deleteMovie(movie.movieId)
+      deleteMovie(movie.id)
         .then(() => {
           const savedMoviesIds = JSON.parse(localStorage.getItem('savedMovies')) || []
           const updatedMovieIds = savedMoviesIds.filter((id) => id !== movie.id)
@@ -132,8 +136,6 @@ export default function MoviesCard({ movie }) {
         })
     }
   }
-
-  const likeButtonClassName = `movies-card__button ${isMovieSaved ? 'movies-card__button_selected' : 'movies-card__button_unselected'}`
 
   return (
     <li className="movies-card">
@@ -157,8 +159,15 @@ export default function MoviesCard({ movie }) {
           onClick={handleToggleMovie}
         ></button>
       ) : (
-        <button className={likeButtonClassName} onClick={handleToggleMovie}>
-          {isMovieSaved ? 'Удалить' : 'Сохранить'}
+        <button
+          className={
+            isMovieSaved
+              ? 'movies-card__button movies-card__button_selected'
+              : 'movies-card__button movies-card__button_unselected'
+          }
+          onClick={handleToggleMovie}
+        >
+          Сохранить
         </button>
       )}
     </li>
