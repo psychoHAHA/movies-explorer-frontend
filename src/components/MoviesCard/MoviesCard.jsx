@@ -247,7 +247,7 @@
 // }
 
 import './MoviesCard.css'
-import { useContext, useState, useEffect } from 'react'
+import { useContext } from 'react'
 import { useLocation } from 'react-router-dom'
 import { MoviesContext } from './../../contexts/MoviesContext'
 
@@ -255,11 +255,7 @@ export default function MoviesCard({ movie }) {
   const { savedMoviesList, saveMovie, deleteMovie } = useContext(MoviesContext)
   const { duration, image: imageURL, nameRU, trailerLink, movieId } = movie
 
-  const [isMovieSaved, setIsMovieSaved] = useState(savedMoviesList.some((m) => m.movieId === movieId))
-
-  useEffect(() => {
-    setIsMovieSaved(savedMoviesList.some((m) => m.movieId === movieId))
-  }, [savedMoviesList, movieId])
+  const isMovieSaved = savedMoviesList.some((savedMovie) => savedMovie.movieId === movieId)
 
   const location = useLocation()
 
@@ -269,21 +265,13 @@ export default function MoviesCard({ movie }) {
 
   const handleToggleMovie = () => {
     if (!isMovieSaved) {
-      saveMovie(movie)
-        .then(() => {
-          setIsMovieSaved(true)
-        })
-        .catch((err) => {
-          console.error(err)
-        })
+      saveMovie(movie).catch((err) => {
+        console.error(err)
+      })
     } else {
-      deleteMovie(movieId)
-        .then(() => {
-          setIsMovieSaved(false)
-        })
-        .catch((err) => {
-          console.error(err)
-        })
+      deleteMovie(movieId).catch((err) => {
+        console.error(err)
+      })
     }
   }
 
@@ -312,6 +300,7 @@ export default function MoviesCard({ movie }) {
         <button
           className={`movies-card__button ${isMovieSaved ? 'movies-card__button_selected' : 'movies-card__button_unselected'}`}
           onClick={handleToggleMovie}
+          disabled={isMovieSaved} // Добавляем этот атрибут, чтобы блокировать кнопку, если фильм уже сохранен
         >
           {isMovieSaved ? 'Удалить' : 'Сохранить'}
         </button>
