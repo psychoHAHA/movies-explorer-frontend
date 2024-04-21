@@ -107,10 +107,10 @@ export default function MoviesCard({ movie }) {
         })
         .catch((err) => console.log(err))
     } else {
-      const updatedSavedMoviesList = savedMoviesFromStorage.filter((m) => m.movieId !== movieId)
-      sessionStorage.setItem('savedMovies', JSON.stringify(updatedSavedMoviesList))
       deleteMovie(movieId)
         .then(() => {
+          const updatedSavedMoviesList = savedMoviesFromStorage.filter((m) => m.movieId !== movieId)
+          sessionStorage.setItem('savedMovies', JSON.stringify(updatedSavedMoviesList))
           setIsMovieSaved(false)
         })
         .catch((err) => console.log(err))
