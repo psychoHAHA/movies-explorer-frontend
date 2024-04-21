@@ -175,9 +175,9 @@ export default function MoviesCard({ movie }) {
 
   const { duration, image: imageURL, nameRU, trailerLink } = movie
 
-  const [isMovieSaved, setIsMovieSaved] = useState(false)
-
   const isLiked = savedMoviesList.some((m) => m.movieId === movie.movieId)
+
+  const [isMovieSaved, setIsMovieSaved] = useState(isLiked)
 
   useEffect(() => {
     setIsMovieSaved(isLiked)
