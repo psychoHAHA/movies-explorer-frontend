@@ -200,7 +200,7 @@
 //       })
 //       .catch((err) => console.log(err))
 //   }
-  
+
 //   // const deleteMovie = (movieId) => {
 //   //   const savedMovie = savedMoviesList.find((item) => item.movieId === movieId)
 //   //   return mainApi
@@ -316,7 +316,6 @@
 // }
 
 // export default App
-
 
 import React, { useEffect, useState } from 'react'
 import { Route, Routes, useNavigate, Navigate } from 'react-router-dom'
@@ -456,7 +455,7 @@ function App() {
           })
           .catch((err) => {
             console.log(err)
-            alert(`Что-то пошло не так... ${err}`)
+            openPopup('При авторизации возникла ошибка, пожалуйста, повторите попытку')
           })
           .finally(() => {
             setTimeout(() => {
@@ -482,7 +481,10 @@ function App() {
               openPopup('Вы успешно зарегистрировались!')
             }
           })
-          .catch((err) => console.log(err))
+          .catch((err) => {
+            console.log(err)
+            openPopup('При регистрации возникла ошибка, пожалуйста, повторите попытку')
+          })
           .finally(() => {
             setTimeout(() => {
               closePopup()
@@ -518,7 +520,7 @@ function App() {
       .createMovie(movie)
       .then((movieData) => {
         console.log(saveMovie)
-        console.log(movieId);
+        console.log(movieId)
         console.log(movie)
         setSavedMoviesList([...savedMoviesList, movieData])
       })
