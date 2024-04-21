@@ -181,16 +181,19 @@ import { useLocation } from 'react-router-dom'
 import { MoviesContext } from './../../contexts/MoviesContext'
 
 export default function MoviesCard({ movie }) {
-  const { savedMoviesList, saveMovie, deleteMovie } = useContext(MoviesContext)
+  const { saveMovie, deleteMovie } = useContext(MoviesContext)
 
-  const { duration, image: imageURL, nameRU, trailerLink } = movie
+  const { duration, image: imageURL, nameRU, trailerLink, movieId } = movie
 
-  const [isMovieSaved, setIsMovieSaved] = useState(false)
+  const [isMovieSaved, setIsMovieSaved] = useState(() => {
+    const savedMoviesIds = JSON.parse(localStorage.getItem('savedMovies')) || []
+    return savedMoviesIds.includes(movieId)
+  })
 
   useEffect(() => {
-    const isLiked = savedMoviesList.some((m) => m.id === movie.id)
-    setIsMovieSaved(isLiked)
-  }, [savedMoviesList, movie.id])
+    const savedMoviesIds = JSON.parse(localStorage.getItem('savedMovies')) || []
+    setIsMovieSaved(savedMoviesIds.includes(movieId))
+  }, [movieId])
 
   const location = useLocation()
 
@@ -204,17 +207,17 @@ export default function MoviesCard({ movie }) {
         .then(() => {
           setIsMovieSaved(true)
           const savedMoviesIds = JSON.parse(localStorage.getItem('savedMovies')) || []
-          localStorage.setItem('savedMovies', JSON.stringify([...savedMoviesIds, movie.movieId]))
+          localStorage.setItem('savedMovies', JSON.stringify([...savedMoviesIds, movieId]))
         })
         .catch((err) => {
           console.error(err)
         })
     } else {
-      deleteMovie(movie.movieId)
+      deleteMovie(movieId)
         .then(() => {
-          const savedMoviesIds = JSON.parse(localStorage.getItem('savedMovies')) || []
-          const updatedMovieIds = savedMoviesIds.filter((id) => id !== movie.movieId)
           setIsMovieSaved(false)
+          const savedMoviesIds = JSON.parse(localStorage.getItem('savedMovies')) || []
+          const updatedMovieIds = savedMoviesIds.filter((id) => id !== movieId)
           localStorage.setItem('savedMovies', JSON.stringify(updatedMovieIds))
         })
         .catch((err) => {
@@ -255,6 +258,7 @@ export default function MoviesCard({ movie }) {
     </li>
   )
 }
+
 // import './MoviesCard.css'
 // import { useContext, useState, useEffect } from 'react'
 // import { useLocation } from 'react-router-dom'
