@@ -184,17 +184,19 @@ export default function MoviesCard({ movie }) {
   const { saveMovie, deleteMovie } = useContext(MoviesContext);
 
   const { duration, image: imageURL, nameRU, trailerLink, movieId } = movie;
-  
+
   const [isMovieSaved, setIsMovieSaved] = useState(false);
-  
+  const [savedMoviesIds, setSavedMoviesIds] = useState([]);
+
   useEffect(() => {
     const savedMoviesIds = JSON.parse(localStorage.getItem('savedMovies')) || [];
+    setSavedMoviesIds(savedMoviesIds);
     setIsMovieSaved(savedMoviesIds.includes(movieId));
   }, [movieId]);
 
   const location = useLocation();
 
-  const timeConvertor = (m) => {
+  const timeConverter = (m) => {
     return `${Math.floor(m / 60)}ч ${m % 60}м`;
   }
 
@@ -202,9 +204,9 @@ export default function MoviesCard({ movie }) {
     if (!isMovieSaved) {
       saveMovie(movie)
         .then(() => {
-          setIsMovieSaved(true);
-          const savedMoviesIds = JSON.parse(localStorage.getItem('savedMovies')) || [];
+          setSavedMoviesIds([...savedMoviesIds, movieId]);
           localStorage.setItem('savedMovies', JSON.stringify([...savedMoviesIds, movieId]));
+          setIsMovieSaved(true);
         })
         .catch((err) => {
           console.error(err);
@@ -212,10 +214,10 @@ export default function MoviesCard({ movie }) {
     } else {
       deleteMovie(movieId)
         .then(() => {
-          setIsMovieSaved(false);
-          const savedMoviesIds = JSON.parse(localStorage.getItem('savedMovies')) || [];
           const updatedMovieIds = savedMoviesIds.filter((id) => id !== movieId);
+          setSavedMoviesIds(updatedMovieIds);
           localStorage.setItem('savedMovies', JSON.stringify(updatedMovieIds));
+          setIsMovieSaved(false);
         })
         .catch((err) => {
           console.error(err);
@@ -236,7 +238,7 @@ export default function MoviesCard({ movie }) {
       </a>
       <div className="movies-card__container">
         <h1 className="movies-card__title">{nameRU}</h1>
-        <p className="movies-card__time">{timeConvertor(duration)}</p>
+        <p className="movies-card__time">{timeConverter(duration)}</p>
       </div>
 
       {location.pathname === '/saved-movies' ? (
@@ -255,7 +257,6 @@ export default function MoviesCard({ movie }) {
     </li>
   )
 }
-
 // import './MoviesCard.css'
 // import { useContext, useState, useEffect } from 'react'
 // import { useLocation } from 'react-router-dom'
