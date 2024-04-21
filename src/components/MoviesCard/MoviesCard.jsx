@@ -175,88 +175,88 @@
 //   )
 // }
 
-import './MoviesCard.css';
-import { useContext, useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { MoviesContext } from './../../contexts/MoviesContext';
+// import './MoviesCard.css';
+// import { useContext, useState, useEffect } from 'react';
+// import { useLocation } from 'react-router-dom';
+// import { MoviesContext } from './../../contexts/MoviesContext';
 
-export default function MoviesCard({ movie }) {
-  const { saveMovie, deleteMovie } = useContext(MoviesContext);
+// export default function MoviesCard({ movie }) {
+//   const { saveMovie, deleteMovie } = useContext(MoviesContext);
 
-  const { duration, image: imageURL, nameRU, trailerLink, movieId } = movie;
+//   const { duration, image: imageURL, nameRU, trailerLink, movieId } = movie;
 
-  const [isMovieSaved, setIsMovieSaved] = useState(false);
-  const [savedMoviesIds, setSavedMoviesIds] = useState([]);
+//   const [isMovieSaved, setIsMovieSaved] = useState(false);
+//   const [savedMoviesIds, setSavedMoviesIds] = useState([]);
 
-  useEffect(() => {
-    const savedMoviesIds = JSON.parse(localStorage.getItem('savedMovies')) || [];
-    setSavedMoviesIds(savedMoviesIds);
-    setIsMovieSaved(savedMoviesIds.includes(movieId));
-  }, [movieId]);
+//   useEffect(() => {
+//     const savedMoviesIds = JSON.parse(localStorage.getItem('savedMovies')) || [];
+//     setSavedMoviesIds(savedMoviesIds);
+//     setIsMovieSaved(savedMoviesIds.includes(movieId));
+//   }, [movieId]);
 
-  const location = useLocation();
+//   const location = useLocation();
 
-  const timeConverter = (m) => {
-    return `${Math.floor(m / 60)}ч ${m % 60}м`;
-  }
+//   const timeConverter = (m) => {
+//     return `${Math.floor(m / 60)}ч ${m % 60}м`;
+//   }
 
-  const handleToggleMovie = () => {
-    if (!isMovieSaved) {
-      saveMovie(movie)
-        .then(() => {
-          setSavedMoviesIds([...savedMoviesIds, movieId]);
-          localStorage.setItem('savedMovies', JSON.stringify([...savedMoviesIds, movieId]));
-          setIsMovieSaved(true);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    } else {
-      deleteMovie(movieId)
-        .then(() => {
-          const updatedMovieIds = savedMoviesIds.filter((id) => id !== movieId);
-          setSavedMoviesIds(updatedMovieIds);
-          localStorage.setItem('savedMovies', JSON.stringify(updatedMovieIds));
-          setIsMovieSaved(false);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    }
-  }
+//   const handleToggleMovie = () => {
+//     if (!isMovieSaved) {
+//       saveMovie(movie)
+//         .then(() => {
+//           setSavedMoviesIds([...savedMoviesIds, movieId]);
+//           localStorage.setItem('savedMovies', JSON.stringify([...savedMoviesIds, movieId]));
+//           setIsMovieSaved(true);
+//         })
+//         .catch((err) => {
+//           console.error(err);
+//         });
+//     } else {
+//       deleteMovie(movieId)
+//         .then(() => {
+//           const updatedMovieIds = savedMoviesIds.filter((id) => id !== movieId);
+//           setSavedMoviesIds(updatedMovieIds);
+//           localStorage.setItem('savedMovies', JSON.stringify(updatedMovieIds));
+//           setIsMovieSaved(false);
+//         })
+//         .catch((err) => {
+//           console.error(err);
+//         });
+//     }
+//   }
 
-  return (
-    <li className="movies-card">
-      <a
-        href={trailerLink}
-        className="movies-card__link"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={`Трейлер к фильму ${nameRU}`}
-      >
-        <img src={imageURL} alt="обложка кина" className="movies-card__image" />
-      </a>
-      <div className="movies-card__container">
-        <h1 className="movies-card__title">{nameRU}</h1>
-        <p className="movies-card__time">{timeConverter(duration)}</p>
-      </div>
+//   return (
+//     <li className="movies-card">
+//       <a
+//         href={trailerLink}
+//         className="movies-card__link"
+//         target="_blank"
+//         rel="noopener noreferrer"
+//         aria-label={`Трейлер к фильму ${nameRU}`}
+//       >
+//         <img src={imageURL} alt="обложка кина" className="movies-card__image" />
+//       </a>
+//       <div className="movies-card__container">
+//         <h1 className="movies-card__title">{nameRU}</h1>
+//         <p className="movies-card__time">{timeConverter(duration)}</p>
+//       </div>
 
-      {location.pathname === '/saved-movies' ? (
-        <button
-          className="movies-card__button movies-card__button_cross"
-          onClick={handleToggleMovie}
-        ></button>
-      ) : (
-        <button
-          className={`movies-card__button ${isMovieSaved ? 'movies-card__button_selected' : 'movies-card__button_unselected'}`}
-          onClick={handleToggleMovie}
-        >
-          {isMovieSaved ? 'Удалить' : 'Сохранить'}
-        </button>
-      )}
-    </li>
-  )
-}
+//       {location.pathname === '/saved-movies' ? (
+//         <button
+//           className="movies-card__button movies-card__button_cross"
+//           onClick={handleToggleMovie}
+//         ></button>
+//       ) : (
+//         <button
+//           className={`movies-card__button ${isMovieSaved ? 'movies-card__button_selected' : 'movies-card__button_unselected'}`}
+//           onClick={handleToggleMovie}
+//         >
+//           {isMovieSaved ? 'Удалить' : 'Сохранить'}
+//         </button>
+//       )}
+//     </li>
+//   )
+// }
 // import './MoviesCard.css'
 // import { useContext, useState, useEffect } from 'react'
 // import { useLocation } from 'react-router-dom'
@@ -339,84 +339,82 @@ export default function MoviesCard({ movie }) {
 //   )
 // }
 
-// import './MoviesCard.css'
-// import { useContext, useState, useEffect } from 'react'
-// import { useLocation } from 'react-router-dom'
-// import { MoviesContext } from './../../contexts/MoviesContext'
+import './MoviesCard.css'
+import { useContext, useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
+import { MoviesContext } from './../../contexts/MoviesContext'
 
-// export default function MoviesCard({ movie }) {
-//   const { savedMoviesList, saveMovie, deleteMovie } = useContext(MoviesContext)
+export default function MoviesCard({ movie }) {
+  const { savedMoviesList, saveMovie, deleteMovie } = useContext(MoviesContext)
 
-//   const { duration, image: imageURL, nameRU, trailerLink } = movie
+  const { duration, image: imageURL, nameRU, trailerLink } = movie
 
-//   const [isMovieSaved, setIsMovieSaved] = useState(false)
+  const [isMovieSaved, setIsMovieSaved] = useState(false)
 
-//   useEffect(() => {
-//     const isLiked = savedMoviesList.some((m) => m.movieId === movie.movieId)
-//     setIsMovieSaved(isLiked)
-//   }, [savedMoviesList, movie.movieId])
+  useEffect(() => {
+    const isLiked = savedMoviesList.some((m) => m.movieId === movie.movieId)
+    setIsMovieSaved(isLiked)
+  }, [savedMoviesList, movie.movieId])
 
-//   const location = useLocation()
+  const location = useLocation()
 
-//   const timeConvertor = (m) => {
-//     return `${Math.floor(m / 60)}ч ${m % 60}м`
-//   }
+  const timeConvertor = (m) => {
+    return `${Math.floor(m / 60)}ч ${m % 60}м`
+  }
 
-//   const handleToggleMovie = () => {
-//     if (!isMovieSaved) {
-//       saveMovie(movie)
-//         .then(() => {
-//           setIsMovieSaved(true)
-//           const savedMoviesIds = JSON.parse(localStorage.getItem('savedMovies')) || []
-//           localStorage.setItem('savedMovies', JSON.stringify([...savedMoviesIds, movie.movieId]))
-//         })
-//         .catch((err) => {
-//           console.error(err)
-//         })
-//     } else {
-//       deleteMovie(movie.movieId)
-//         .then(() => {
-//           const updatedMovieIds = savedMoviesList
-//             .filter((m) => m.movieId !== movie.movieId)
-//             .map((m) => m.movieId)
-//           setIsMovieSaved(false)
-//           localStorage.setItem('savedMovies', JSON.stringify(updatedMovieIds))
-//         })
-//         .catch((err) => {
-//           console.error(err)
-//         })
-//     }
-//   }
+  const handleToggleMovie = () => {
+    if (!isMovieSaved) {
+      saveMovie(movie)
+        .then(() => {
+          const updatedSavedMoviesList = [...savedMoviesList, movie]
+          setIsMovieSaved(updatedSavedMoviesList)
+          localStorage.setItem('savedMovies', JSON.stringify(updatedSavedMoviesList))
+        })
+        .catch((err) => {
+          console.error(err)
+        })
+    } else {
+      deleteMovie(movie.movieId)
+        .then(() => {
+          const updatedSavedMoviesList = savedMoviesList.filter((m) => m.movieId !== movie.movieId)
+          setIsMovieSaved(updatedSavedMoviesList)
+          localStorage.setItem('savedMovies', JSON.stringify(updatedSavedMoviesList))
+        })
+        .catch((err) => {
+          console.error(err)
+        })
+    }
+  }
 
-//   return (
-//     <li className="movies-card">
-//       <a
-//         href={trailerLink}
-//         className="movies-card__link"
-//         target="_blank"
-//         rel="noopener noreferrer"
-//         aria-label={`Трейлер к фильму ${nameRU}`}
-//       >
-//         <img src={imageURL} alt="обложка кина" className="movies-card__image" />
-//       </a>
-//       <div className="movies-card__container">
-//         <h1 className="movies-card__title">{nameRU}</h1>
-//         <p className="movies-card__time">{timeConvertor(duration)}</p>
-//       </div>
+  return (
+    <li className="movies-card">
+      <a
+        href={trailerLink}
+        className="movies-card__link"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`Трейлер к фильму ${nameRU}`}
+      >
+        <img src={imageURL} alt="обложка кина" className="movies-card__image" />
+      </a>
+      <div className="movies-card__container">
+        <h1 className="movies-card__title">{nameRU}</h1>
+        <p className="movies-card__time">{timeConvertor(duration)}</p>
+      </div>
 
-//       {location.pathname === '/saved-movies' ? (
-//         <button
-//           className="movies-card__button movies-card__button_cross"
-//           onClick={handleToggleMovie}
-//         ></button>
-//       ) : (
-//         <button
-//           className={`movies-card__button ${isMovieSaved ? 'movies-card__button_selected' : 'movies-card__button_unselected'}`}
-//           onClick={handleToggleMovie}
-//         >
-//           {isMovieSaved ? 'Удалить' : 'Сохранить'}
-//         </button>
-//       )}
-//     </li>
-//   )
-// }
+      {location.pathname === '/saved-movies' ? (
+        <button
+          className="movies-card__button movies-card__button_cross"
+          onClick={handleToggleMovie}
+        ></button>
+      ) : (
+        <button
+          className={`movies-card__button ${isMovieSaved ? 'movies-card__button_selected' : 'movies-card__button_unselected'}`}
+          onClick={handleToggleMovie}
+        >
+          {isMovieSaved ? 'Удалить' : 'Сохранить'}
+        </button>
+      )}
+    </li>
+  )
+}
