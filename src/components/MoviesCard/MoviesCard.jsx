@@ -28,7 +28,7 @@ export default function MoviesCard({ movie }) {
   }
 
   const handleToggleMovie = () => {
-    if (!isLiked) {
+    if (!isMovieSaved) {
       saveMovie(movie)
         .then(() => {
           setIsMovieSaved(true)
