@@ -151,47 +151,43 @@
 // }
 
 import './MoviesCard.css'
-import { useContext, useState, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { MoviesContext } from './../../contexts/MoviesContext'
 
 export default function MoviesCard({ movie }) {
   const { saveMovie, deleteMovie } = useContext(MoviesContext)
   const { duration, image: imageURL, nameRU, trailerLink, movieId } = movie
-  const [isMovieSaved, setIsMovieSaved] = useState(false)
+  const [savedMovies, setSavedMovies] = useState([])
   const location = useLocation()
 
   useEffect(() => {
     const savedMoviesFromStorage = sessionStorage.getItem('savedMovies')
       ? JSON.parse(sessionStorage.getItem('savedMovies'))
       : []
-    setIsMovieSaved(savedMoviesFromStorage.some((m) => m.movieId === movieId))
-  }, [movieId])
+    setSavedMovies(savedMoviesFromStorage)
+  }, [])
+
+  const isMovieSaved = savedMovies.some((m) => m.movieId === movieId)
 
   const timeConvertor = (m) => {
     return `${Math.floor(m / 60)}ч ${m % 60}м`
   }
 
   const handleToggleMovie = () => {
-    const savedMoviesFromStorage = sessionStorage.getItem('savedMovies')
-      ? JSON.parse(sessionStorage.getItem('savedMovies'))
-      : []
-
     if (!isMovieSaved) {
       saveMovie(movie)
         .then(() => {
-          const updatedSavedMoviesList = [...savedMoviesFromStorage, movie]
+          const updatedSavedMoviesList = [...savedMovies, movie]
           sessionStorage.setItem('savedMovies', JSON.stringify(updatedSavedMoviesList))
-          setIsMovieSaved(true)
+          setSavedMovies(updatedSavedMoviesList)
         })
         .catch((err) => console.log(err))
     } else {
-      const updatedSavedMoviesList = savedMoviesFromStorage.filter((m) => m.movieId !== movieId)
+      const updatedSavedMoviesList = savedMovies.filter((m) => m.movieId !== movieId)
       sessionStorage.setItem('savedMovies', JSON.stringify(updatedSavedMoviesList))
+      setSavedMovies(updatedSavedMoviesList)
       deleteMovie(movieId)
-        .then(() => {
-          setIsMovieSaved(false)
-        })
         .catch((err) => console.log(err))
     }
   }
