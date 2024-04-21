@@ -93,11 +93,36 @@ export default function MoviesCard({ movie }) {
     return `${Math.floor(m / 60)}ч ${m % 60}м`
   }
 
+  // const handleToggleMovie = () => {
+  //   const savedMoviesFromStorage = sessionStorage.getItem('savedMovies')
+  //     ? JSON.parse(sessionStorage.getItem('savedMovies'))
+  //     : []
+
+  //   if (!isMovieSaved) {
+  //     saveMovie(movie)
+  //       .then(() => {
+  //         const updatedSavedMoviesList = [...savedMoviesFromStorage, movie]
+  //         sessionStorage.setItem('savedMovies', JSON.stringify(updatedSavedMoviesList))
+  //         setIsMovieSaved(true)
+  //       })
+  //       .catch((err) => console.log(err))
+  //   } else {
+  //     deleteMovie(movieId)
+  //       .then(() => {
+  //         const updatedSavedMoviesList = savedMoviesFromStorage.filter((m) => m.movieId !== movieId)
+  //         sessionStorage.setItem('savedMovies', JSON.stringify(updatedSavedMoviesList))
+  //         setIsMovieSaved(false)
+  //       })
+  //       .catch((err) => console.log(err))
+  //   }
+  // }
+
+
   const handleToggleMovie = () => {
     const savedMoviesFromStorage = sessionStorage.getItem('savedMovies')
       ? JSON.parse(sessionStorage.getItem('savedMovies'))
       : []
-
+  
     if (!isMovieSaved) {
       saveMovie(movie)
         .then(() => {
@@ -107,16 +132,15 @@ export default function MoviesCard({ movie }) {
         })
         .catch((err) => console.log(err))
     } else {
+      const updatedSavedMoviesList = savedMoviesFromStorage.filter((m) => m.movieId !== movieId)
+      sessionStorage.setItem('savedMovies', JSON.stringify(updatedSavedMoviesList))
+      setIsMovieSaved(false) // Set state before deleting the movie
+  
       deleteMovie(movieId)
-        .then(() => {
-          const updatedSavedMoviesList = savedMoviesFromStorage.filter((m) => m.movieId !== movieId)
-          sessionStorage.setItem('savedMovies', JSON.stringify(updatedSavedMoviesList))
-          setIsMovieSaved(false)
-        })
         .catch((err) => console.log(err))
     }
   }
-
+  
   return (
     <li className="movies-card">
       <a
