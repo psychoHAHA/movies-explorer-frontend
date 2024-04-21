@@ -78,12 +78,9 @@
 //   )
 // }
 
-
 import './MoviesCard.css'
-
 import { useContext, useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-
 import { MoviesContext } from './../../contexts/MoviesContext'
 
 export default function MoviesCard({ movie }) {
@@ -91,16 +88,12 @@ export default function MoviesCard({ movie }) {
 
   const { duration, image: imageURL, nameRU, trailerLink } = movie
 
-  const isLiked = savedMoviesList.some((m) => m.id === movie.id)
-
-  const [isMovieSaved, setIsMovieSaved] = useState(isLiked)
-
-  const likeButtonClassName = `movies-card__button ${isMovieSaved ? 'movies-card__button_selected' : 'movies-card__button_unselected'}`
+  const [isMovieSaved, setIsMovieSaved] = useState(false)
 
   useEffect(() => {
-    const savedMovieIds = JSON.parse(localStorage.getItem('savedMovies')) || []
-    setIsMovieSaved(savedMovieIds.includes(movie.movieId))
-  }, [movie.movieId])
+    const isLiked = savedMoviesList.some((m) => m.movieId === movie.movieId)
+    setIsMovieSaved(isLiked)
+  }, [savedMoviesList, movie.movieId])
 
   const location = useLocation()
 
@@ -109,12 +102,12 @@ export default function MoviesCard({ movie }) {
   }
 
   const handleToggleMovie = () => {
-    if (!isLiked) {
+    if (!isMovieSaved) {
       saveMovie(movie)
         .then(() => {
-          const savedMovieIds = JSON.parse(localStorage.getItem('savedMovies')) || []
           setIsMovieSaved(true)
-          localStorage.setItem('savedMovies', JSON.stringify([...savedMovieIds, movie.id]))
+          const savedMoviesIds = JSON.parse(localStorage.getItem('savedMovies')) || []
+          localStorage.setItem('savedMovies', JSON.stringify([...savedMoviesIds, movie.id]))
         })
         .catch((err) => {
           console.error(err)
@@ -122,8 +115,8 @@ export default function MoviesCard({ movie }) {
     } else {
       deleteMovie(movie.movieId)
         .then(() => {
-          const savedMovieIds = JSON.parse(localStorage.getItem('savedMovies')) || []
-          const updatedMovieIds = savedMovieIds.filter((id) => id !== movie.id)
+          const savedMoviesIds = JSON.parse(localStorage.getItem('savedMovies')) || []
+          const updatedMovieIds = savedMoviesIds.filter((id) => id !== movie.id)
           setIsMovieSaved(false)
           localStorage.setItem('savedMovies', JSON.stringify(updatedMovieIds))
         })
@@ -155,8 +148,11 @@ export default function MoviesCard({ movie }) {
           onClick={handleToggleMovie}
         ></button>
       ) : (
-        <button className={likeButtonClassName} onClick={handleToggleMovie}>
-          Сохранить
+        <button
+          className={`movies-card__button ${isMovieSaved ? 'movies-card__button_selected' : 'movies-card__button_unselected'}`}
+          onClick={handleToggleMovie}
+        >
+          {isMovieSaved ? 'Удалить' : 'Сохранить'}
         </button>
       )}
     </li>
