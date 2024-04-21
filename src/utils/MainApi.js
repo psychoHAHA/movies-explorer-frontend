@@ -32,18 +32,18 @@ class MainApi {
 
   setUserInfo({ name, email }) {
     return fetch(`${this._baseUrl}/users/me`, {
-      method: "PATCH",
+      method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify({ name, email }),
     }).then((res) => {
       if (res.ok) {
-        return res.json();
+        return res.json()
       } else {
         return res.json().then((err) => {
-          return Promise.reject(err);
-        });
+          return Promise.reject(err)
+        })
       }
-    });
+    })
   }
 
   register(name, email, password) {
