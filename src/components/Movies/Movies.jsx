@@ -109,40 +109,6 @@ export default function Movies({ getAllMovies }) {
     checkIfCompleted(index + nextCount)
   }
 
-  //handleSearchFormSubmit
-
-  // const handleSearchFormSubmit = (data) => {
-  //   try {
-  //     setIsLoading(true)
-  //     const newMoviesFilter = { ...moviesFilter, query: data.search }
-  //     if (moviesList.length === 0) {
-  //       getAllMovies()
-  //         .then((adaptedMovies) => {
-  //           setMovieSearch(newMoviesFilter)
-  //           setMoviesFilter(newMoviesFilter)
-  //           console.log(isLoading)
-
-  //           handleFilterMovies(adaptedMovies, newMoviesFilter)
-  //         })
-  //         .catch((err) => {
-  //           console.log(err)
-  //         })
-  //     } else {
-  //       setIsLoading(true)
-  //       setMovieSearch(newMoviesFilter)
-  //       setMoviesFilter(newMoviesFilter)
-  //       handleFilterMovies(moviesList, newMoviesFilter)
-  //     }
-  //     new Promise((resolve) => setTimeout(resolve, 500))
-  //     setIsLoading(false)
-  //   } catch (err) {
-  //     console.log(err)
-  //   } finally {
-  //     setIsLoading(false)
-  //     console.log(isLoading)
-  //   }
-  // }
-
   const handleSearchFormSubmit = async (data) => {
     try {
       setIsLoading(true)
