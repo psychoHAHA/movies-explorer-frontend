@@ -175,54 +175,51 @@
 //   )
 // }
 
-import './MoviesCard.css'
-import { useContext, useState, useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
-import { MoviesContext } from './../../contexts/MoviesContext'
+import './MoviesCard.css';
+import { useContext, useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { MoviesContext } from './../../contexts/MoviesContext';
 
 export default function MoviesCard({ movie }) {
-  const { saveMovie, deleteMovie } = useContext(MoviesContext)
+  const { saveMovie, deleteMovie } = useContext(MoviesContext);
 
-  const { duration, image: imageURL, nameRU, trailerLink, movieId } = movie
-
-  const [isMovieSaved, setIsMovieSaved] = useState(() => {
-    const savedMoviesIds = JSON.parse(localStorage.getItem('savedMovies')) || []
-    return savedMoviesIds.includes(movieId)
-  })
-
+  const { duration, image: imageURL, nameRU, trailerLink, movieId } = movie;
+  
+  const [isMovieSaved, setIsMovieSaved] = useState(false);
+  
   useEffect(() => {
-    const savedMoviesIds = JSON.parse(localStorage.getItem('savedMovies')) || []
-    setIsMovieSaved(savedMoviesIds.includes(movieId))
-  }, [movieId])
+    const savedMoviesIds = JSON.parse(localStorage.getItem('savedMovies')) || [];
+    setIsMovieSaved(savedMoviesIds.includes(movieId));
+  }, [movieId]);
 
-  const location = useLocation()
+  const location = useLocation();
 
   const timeConvertor = (m) => {
-    return `${Math.floor(m / 60)}ч ${m % 60}м`
+    return `${Math.floor(m / 60)}ч ${m % 60}м`;
   }
 
   const handleToggleMovie = () => {
     if (!isMovieSaved) {
       saveMovie(movie)
         .then(() => {
-          setIsMovieSaved(true)
-          const savedMoviesIds = JSON.parse(localStorage.getItem('savedMovies')) || []
-          localStorage.setItem('savedMovies', JSON.stringify([...savedMoviesIds, movieId]))
+          setIsMovieSaved(true);
+          const savedMoviesIds = JSON.parse(localStorage.getItem('savedMovies')) || [];
+          localStorage.setItem('savedMovies', JSON.stringify([...savedMoviesIds, movieId]));
         })
         .catch((err) => {
-          console.error(err)
-        })
+          console.error(err);
+        });
     } else {
       deleteMovie(movieId)
         .then(() => {
-          setIsMovieSaved(false)
-          const savedMoviesIds = JSON.parse(localStorage.getItem('savedMovies')) || []
-          const updatedMovieIds = savedMoviesIds.filter((id) => id !== movieId)
-          localStorage.setItem('savedMovies', JSON.stringify(updatedMovieIds))
+          setIsMovieSaved(false);
+          const savedMoviesIds = JSON.parse(localStorage.getItem('savedMovies')) || [];
+          const updatedMovieIds = savedMoviesIds.filter((id) => id !== movieId);
+          localStorage.setItem('savedMovies', JSON.stringify(updatedMovieIds));
         })
         .catch((err) => {
-          console.error(err)
-        })
+          console.error(err);
+        });
     }
   }
 
