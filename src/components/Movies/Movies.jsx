@@ -124,7 +124,7 @@ export default function Movies({ getAllMovies }) {
         handleFilterMovies(moviesList, newMoviesFilter)
       }
       // Небольшая задержка перед установкой isLoading в false
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      await new Promise((resolve) => setTimeout(resolve, 700))
       setIsLoading(false)
     } catch (err) {
       console.log(err)
