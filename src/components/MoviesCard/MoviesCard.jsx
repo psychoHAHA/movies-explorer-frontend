@@ -77,6 +77,7 @@
 //     </li>
 //   )
 // }
+
 import './MoviesCard.css'
 import { useContext, useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
@@ -92,6 +93,11 @@ export default function MoviesCard({ movie }) {
     setIsMovieSaved(savedMoviesList.some((m) => m.movieId === movieId))
   }, [savedMoviesList, movieId])
 
+  useEffect(() => {
+    const savedMoviesFromStorage = JSON.parse(sessionStorage.getItem('savedMovies')) || [];
+    setIsMovieSaved(savedMoviesFromStorage.some((m) => m.movieId === movieId))
+  }, [movieId])
+
   const timeConvertor = (m) => {
     return `${Math.floor(m / 60)}ч ${m % 60}м`
   }
@@ -101,12 +107,16 @@ export default function MoviesCard({ movie }) {
       saveMovie(movie)
         .then(() => {
           setIsMovieSaved(true)
+          const updatedSavedMoviesList = [...savedMoviesList, movie]
+          sessionStorage.setItem('savedMovies', JSON.stringify(updatedSavedMoviesList))
         })
         .catch((err) => console.log(err))
     } else {
       deleteMovie(movieId)
         .then(() => {
           setIsMovieSaved(false)
+          const updatedSavedMoviesList = savedMoviesList.filter((m) => m.movieId !== movieId)
+          sessionStorage.setItem('savedMovies', JSON.stringify(updatedSavedMoviesList))
         })
         .catch((err) => console.log(err))
     }
