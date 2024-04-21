@@ -177,8 +177,9 @@ export default function MoviesCard({ movie }) {
 
   const [isMovieSaved, setIsMovieSaved] = useState(false)
 
+  const isLiked = savedMoviesList.some((m) => m.movieId === movie.movieId)
+
   useEffect(() => {
-    const isLiked = savedMoviesList.some((m) => m.movieId === movie.movieId)
     setIsMovieSaved(isLiked)
   }, [savedMoviesList, movie.movieId])
 
@@ -189,7 +190,7 @@ export default function MoviesCard({ movie }) {
   }
 
   const handleToggleMovie = () => {
-    if (!isMovieSaved) {
+    if (!isLiked) {
       saveMovie(movie)
         .then(() => {
           setIsMovieSaved(true)
