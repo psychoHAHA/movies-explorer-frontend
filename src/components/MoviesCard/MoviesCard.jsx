@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom'
 import { MoviesContext } from './../../contexts/MoviesContext'
 
 export default function MoviesCard({ movie }) {
-  const { saveMovie, deleteMovie } = useContext(MoviesContext)
+  const { savedMoviesList, saveMovie, deleteMovie } = useContext(MoviesContext)
   const { duration, image: imageURL, nameRU, trailerLink, movieId } = movie
   const [isMovieSaved, setIsMovieSaved] = useState(false)
   const location = useLocation()
@@ -21,29 +21,49 @@ export default function MoviesCard({ movie }) {
     return `${Math.floor(m / 60)}ч ${m % 60}м`
   }
 
-  const handleToggleMovie = () => {
-    const savedMoviesFromStorage = sessionStorage.getItem('savedMovies')
-      ? JSON.parse(sessionStorage.getItem('savedMovies'))
-      : []
+  // const handleToggleMovie = () => {
+  //   const savedMoviesFromStorage = sessionStorage.getItem('savedMovies')
+  //     ? JSON.parse(sessionStorage.getItem('savedMovies'))
+  //     : []
 
+  //   if (!isMovieSaved) {
+  //     saveMovie(movie)
+  //       .then(() => {
+  //         const updatedSavedMoviesList = [...savedMoviesFromStorage, movie]
+  //         sessionStorage.setItem('savedMovies', JSON.stringify(updatedSavedMoviesList))
+  //         setIsMovieSaved(true)
+  //       })
+  //       .catch((err) => console.log(err))
+  //   } else {
+  //     deleteMovie(movieId)
+  //       .then(() => {
+  //         const updatedSavedMoviesList = savedMoviesFromStorage.filter((m) => m.movieId !== movieId)
+  //         sessionStorage.setItem('savedMovies', JSON.stringify(updatedSavedMoviesList))
+  //         setIsMovieSaved(false)
+  //       })
+  //       .catch((err) => console.log(err))
+  //   }
+  // }
+
+  const handleToggleMovie = () => {
     if (!isMovieSaved) {
       saveMovie(movie)
         .then(() => {
-          const updatedSavedMoviesList = [...savedMoviesFromStorage, movie]
-          sessionStorage.setItem('savedMovies', JSON.stringify(updatedSavedMoviesList))
-          setIsMovieSaved(true)
+          const updatedSavedMoviesList = [...savedMoviesList, movie];
+          sessionStorage.setItem('savedMovies', JSON.stringify(updatedSavedMoviesList));
+          setIsMovieSaved(true);
         })
-        .catch((err) => console.log(err))
+        .catch((err) => console.log(err));
     } else {
       deleteMovie(movieId)
         .then(() => {
-          const updatedSavedMoviesList = savedMoviesFromStorage.filter((m) => m.movieId !== movieId)
-          sessionStorage.setItem('savedMovies', JSON.stringify(updatedSavedMoviesList))
-          setIsMovieSaved(false)
+          const updatedSavedMoviesList = savedMoviesList.filter((m) => m.movieId !== movieId);
+          sessionStorage.setItem('savedMovies', JSON.stringify(updatedSavedMoviesList));
+          setIsMovieSaved(false);
         })
-        .catch((err) => console.log(err))
+        .catch((err) => console.log(err));
     }
-  }
+  };
 
   return (
     <li className="movies-card">
