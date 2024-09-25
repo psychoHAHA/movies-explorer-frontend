@@ -5,7 +5,7 @@ import App from "./components/App/App";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="https://psychohaha.github.io/movies-explorer-frontend/">
       <App />
     </BrowserRouter>
   </React.StrictMode>
