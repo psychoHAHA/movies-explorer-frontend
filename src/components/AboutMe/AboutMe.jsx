@@ -6,7 +6,7 @@ export default function AboutMe() {
   return (
     <>
       <div className="about-me" id="AboutMe">
-        <h2 className="about-me__title">Студент</h2>
+        <h2 className="about-me__title">Обо мне</h2>
         <div className="about-me__information">
           <img src={photo} alt="я" className="about-me__photo" />
           <div className="about-me__text">
@@ -15,8 +15,7 @@ export default function AboutMe() {
             <p className="about-me__info">
               Я родился и живу в Екатеринбурге, учусь на строительном
               факультете. В свободное время читаю книги, смотрю фильмы, играю в
-              видеоигры, занимаюсь футболом. Недавно начал кодить. С апреля 2023
-              года прохожу курс по веб-разработке, сейчас пишу диплом.
+              видеоигры, занимаюсь футболом. Недавно начал кодить. С апреля 2023 изучаю веб-разработку, сейчас делаю проект с поиском фильмов.
             </p>
             <div className="about-me__links">
               <a

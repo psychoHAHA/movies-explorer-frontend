@@ -9,7 +9,7 @@ export default function AboutProject() {
         <div className="about__section">
           <div className="about__container">
             <h3 className="about__container-type_title">
-              Дипломный проект включал 5 этапов
+              Данный проект включал 5 этапов
             </h3>
             <p className="about__container-type_paragraph">
               Составление плана, работу над бэкендом, вёрстку, добавление
@@ -18,7 +18,7 @@ export default function AboutProject() {
           </div>
           <div className="about__container">
             <h3 className="about__container-type_title">
-              На выполнение диплома ушло 5 недель
+              На проект ушло 5 недель
             </h3>
             <p className="about__container-type_paragraph">
               У каждого этапа был мягкий и жёсткий дедлайн, которые нужно было

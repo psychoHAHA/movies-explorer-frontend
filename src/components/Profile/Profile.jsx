@@ -94,7 +94,7 @@ import mainApi from '../../utils/MainApi.js'
 export default function Profile({ onLogout, openPopup }) {
   const { currentUser } = useContext(CurrentUserContext)
 
-  const [isVisibleButton, setIsVisibleButton] = useState(false);
+  const [isVisibleButton, setIsVisibleButton] = useState(false)
 
   const [name, setName] = useState(currentUser.name)
   const [editName, setEditName] = useState(currentUser.name)
@@ -103,6 +103,7 @@ export default function Profile({ onLogout, openPopup }) {
 
   const handleSubmit = (evt) => {
     evt.preventDefault()
+    console.log('Отправляемые данные:', { name, email })
 
     mainApi
       .setUserInfo({ name, email })
@@ -113,7 +114,7 @@ export default function Profile({ onLogout, openPopup }) {
       })
       .catch((error) => {
         openPopup(`Что-то пошло не так... ${error}`)
-        console.log(error);
+        console.log(error)
       })
   }
 
@@ -173,7 +174,9 @@ export default function Profile({ onLogout, openPopup }) {
           </div>
 
           <div className="profile__buttons">
-            <button className="profile__button profile__button-edit" disabled={!isVisibleButton}>Редактировать</button>
+            <button className="profile__button profile__button-edit" disabled={!isVisibleButton}>
+              Редактировать
+            </button>
             <button className="profile__button profile__button-logout" onClick={logoutClickHandler}>
               Выйти из аккаунта
             </button>
